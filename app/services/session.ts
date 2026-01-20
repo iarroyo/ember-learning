@@ -12,6 +12,10 @@ export default class SessionService extends Service {
   @tracked isAuthenticated = false;
   @tracked currentUser: User | null = null;
   @tracked token: string | null = null;
+
+  // Stores the transition that was attempted before redirecting to login.
+  // After successful login, retry this transition to send the user to their
+  // originally requested page instead of a default route.
   attemptedTransition: Transition | null = null;
 
   async login(credentials: { email: string; password: string }): Promise<void> {

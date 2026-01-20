@@ -15,6 +15,8 @@ module.exports = {
         allowDeclareFields: true,
       },
     ],
+    // ember-concurrency async arrow task transform
+    require.resolve('ember-concurrency/async-arrow-task-transform'),
     [
       'babel-plugin-ember-template-compilation',
       {

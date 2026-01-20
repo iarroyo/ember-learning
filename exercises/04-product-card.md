@@ -1,4 +1,4 @@
-# Exercise 03: Product Card Component
+# Exercise 04: Product Card Component
 
 **Difficulty: Medium**
 

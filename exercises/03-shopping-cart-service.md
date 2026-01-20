@@ -1,4 +1,4 @@
-# Exercise 04: Shopping Cart Service
+# Exercise 03: Shopping Cart Service
 
 **Difficulty: Medium**
 
