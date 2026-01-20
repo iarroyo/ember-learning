@@ -66,5 +66,6 @@ Run `npm test` and ensure all tests in `Unit | Service | shopping-cart` pass.
 
 - Creating Ember services
 - Using `@tracked` for reactive arrays
+- Using `@cached` for expensive derived computations (e.g., `subtotal`)
 - Triggering reactivity when mutating arrays (spreading to create new arrays)
 - Service injection pattern

@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import { tracked } from '@glimmer/tracking';
+import { tracked, cached } from '@glimmer/tracking';
 
 export interface CartItem {
   id: string;
@@ -11,10 +11,12 @@ export interface CartItem {
 export default class ShoppingCartService extends Service {
   @tracked items: CartItem[] = [];
 
+  @cached
   get itemCount(): number {
     return this.items.reduce((sum, item) => sum + item.quantity, 0);
   }
 
+  @cached
   get subtotal(): number {
     return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
   }
