@@ -5,15 +5,105 @@ import { on } from '@ember/modifier';
 import { hash } from '@ember/helper';
 import { modifier } from 'ember-modifier';
 import type { ComponentLike } from '@glint/template';
-import { ModalTrigger } from 'ember-learning/components/modal/trigger';
-import type { ModalTriggerSignature } from 'ember-learning/components/modal/trigger';
-import { ModalHeader } from 'ember-learning/components/modal/header';
-import type { ModalHeaderSignature } from 'ember-learning/components/modal/header';
-import { ModalBody } from 'ember-learning/components/modal/body';
-import type { ModalBodySignature } from 'ember-learning/components/modal/body';
-import { ModalFooter } from 'ember-learning/components/modal/footer';
-import type { ModalFooterSignature } from 'ember-learning/components/modal/footer';
+import type { TOC } from '@ember/component/template-only';
 
+// ModalTrigger Component
+export interface ModalTriggerSignature {
+  Args: {
+    onOpen?: () => void;
+    storeTrigger?: (element: HTMLElement) => void;
+  };
+  Blocks: {
+    default: [];
+  };
+  Element: HTMLButtonElement;
+}
+
+class ModalTrigger extends Component<ModalTriggerSignature> {
+  @action
+  handleClick(event: MouseEvent): void {
+    // Store reference to trigger element for focus return
+    if (this.args.storeTrigger) {
+      this.args.storeTrigger(event.currentTarget as HTMLElement);
+    }
+    if (this.args.onOpen) {
+      this.args.onOpen();
+    }
+  }
+
+  <template>
+    <button
+      type="button"
+      {{on "click" this.handleClick}}
+      ...attributes
+    >
+      {{yield}}
+    </button>
+  </template>
+}
+
+// ModalHeader Component
+export interface ModalHeaderSignature {
+  Args: {
+    title: string;
+    titleId?: string;
+    onClose?: () => void;
+  };
+  Element: HTMLDivElement;
+}
+
+const ModalHeader = <TOC<ModalHeaderSignature>>(
+  <template>
+    <div data-test-modal-header>
+      <h2 data-test-modal-title id={{@titleId}}>{{@title}}</h2>
+      {{#if @onClose}}
+        <button
+          data-test-modal-close
+          type="button"
+          {{on "click" @onClose}}
+        >
+          ×
+        </button>
+      {{/if}}
+    </div>
+  </template>
+);
+
+// ModalBody Component
+export interface ModalBodySignature {
+  Args: Record<string, never>;
+  Blocks: {
+    default: [];
+  };
+  Element: HTMLDivElement;
+}
+
+const ModalBody = <TOC<ModalBodySignature>>(
+  <template>
+    <div data-test-modal-body>
+      {{yield}}
+    </div>
+  </template>
+);
+
+// ModalFooter Component
+export interface ModalFooterSignature {
+  Args: Record<string, never>;
+  Blocks: {
+    default: [];
+  };
+  Element: HTMLDivElement;
+}
+
+const ModalFooter = <TOC<ModalFooterSignature>>(
+  <template>
+    <div data-test-modal-footer>
+      {{yield}}
+    </div>
+  </template>
+);
+
+// Focus modifier
 const focusOnInsert = modifier((element: HTMLElement) => {
   // Focus the first focusable element or the modal itself
   const focusableElements = element.querySelectorAll<HTMLElement>(
@@ -27,6 +117,7 @@ const focusOnInsert = modifier((element: HTMLElement) => {
   }
 });
 
+// Main Modal Component
 interface ModalSignature {
   Args: {
     isOpen?: boolean;
