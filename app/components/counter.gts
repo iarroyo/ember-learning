@@ -4,6 +4,8 @@ import { action } from '@ember/object';
 import { on } from '@ember/modifier';
 import type Owner from '@ember/owner';
 
+import { Button } from 'ember-learning/components/ui/button';
+
 interface CounterSignature {
   Args: {
     initialValue?: number;
@@ -39,11 +41,32 @@ export class Counter extends Component<CounterSignature> {
   }
 
   <template>
-    <div>
-      <span data-test-count>{{this.count}}</span>
-      <button data-test-increment type="button" {{on "click" this.increment}}>Increment</button>
-      <button data-test-decrement type="button" {{on "click" this.decrement}}>Decrement</button>
-      <button data-test-reset type="button" {{on "click" this.reset}}>Reset</button>
+    <div class="flex items-center gap-2">
+      <Button
+        @variant="outline"
+        @size="icon-sm"
+        data-test-decrement
+        {{on "click" this.decrement}}
+      >
+        −
+      </Button>
+      <span data-test-count class="text-xl font-semibold tabular-nums w-10 text-center">{{this.count}}</span>
+      <Button
+        @variant="outline"
+        @size="icon-sm"
+        data-test-increment
+        {{on "click" this.increment}}
+      >
+        +
+      </Button>
+      <Button
+        @variant="ghost"
+        @size="sm"
+        data-test-reset
+        {{on "click" this.reset}}
+      >
+        Reset
+      </Button>
     </div>
   </template>;
 }

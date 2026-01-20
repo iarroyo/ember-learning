@@ -1,251 +1,232 @@
-import Component from '@glimmer/component';
-import { tracked } from '@glimmer/tracking';
-import { action } from '@ember/object';
-import { fn } from '@ember/helper';
-import { on } from '@ember/modifier';
+import { LinkTo } from '@ember/routing';
 
-import { Alert } from 'ember-learning/components/alert';
-import { AsyncButton } from 'ember-learning/components/async-button';
-import { SearchBox } from 'ember-learning/components/search-box';
-import { GlobalSearchBox } from 'ember-learning/components/global-search-box';
-import { Counter } from 'ember-learning/components/counter';
-
-class DemoPage extends Component {
-  @tracked alertVariant: 'info' | 'success' | 'warning' | 'error' = 'info';
-  @tracked asyncButtonState = 'idle';
-  @tracked searchResults: string[] = [];
-  @tracked showTaskDemo = false;
-
-  @action
-  setAlertVariant(variant: 'info' | 'success' | 'warning' | 'error'): void {
-    this.alertVariant = variant;
-  }
-
-  @action
-  async simulateAsync(): Promise<void> {
-    this.asyncButtonState = 'loading';
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    this.asyncButtonState = 'success';
-  }
-
-  @action
-  async simulateError(): Promise<void> {
-    throw new Error('Simulated error');
-  }
-
-  @action
-  toggleTaskDemo(): void {
-    this.showTaskDemo = !this.showTaskDemo;
-  }
-
-  <template>
-    <div class="max-w-6xl mx-auto px-4 py-8">
-      {{! Header }}
-      <header class="text-center mb-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">
-          Ember Learning Project
-        </h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-          A collection of exercises and component implementations demonstrating modern Ember.js patterns including Glimmer components, tracked properties, services, and ember-concurrency.
-        </p>
-      </header>
-
-      {{! Exercises Overview }}
-      <section class="mb-12">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
-          Exercises Overview
-        </h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div class="bg-white p-4 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900">01-03: Basics</h3>
-            <p class="text-sm text-gray-600">Components, Templates, Arguments</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900">04-06: State & Services</h3>
-            <p class="text-sm text-gray-600">Shopping Cart, @tracked, Services</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900">07-09: Actions & Forms</h3>
-            <p class="text-sm text-gray-600">Event Handling, Form Validation</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900">10-12: Routing & Data</h3>
-            <p class="text-sm text-gray-600">Routes, Models, Async Data</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900">13-15: Advanced Patterns</h3>
-            <p class="text-sm text-gray-600">Modal, Authentication, @tracked vs Lifecycle</p>
-          </div>
-          <div class="bg-white p-4 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900">16-18: Async & Testing</h3>
-            <p class="text-sm text-gray-600">Cleanup, Test Waiters, ember-concurrency</p>
-          </div>
-        </div>
-      </section>
-
-      {{! Component Demos }}
-      <section class="mb-12">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
-          Component Demos
-        </h2>
-
-        {{! Counter Demo }}
-        <div class="bg-white p-6 rounded-lg shadow-sm border mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Counter (Exercise 01)</h3>
-          <p class="text-sm text-gray-600 mb-4">Basic @tracked state and actions</p>
-          <Counter />
-        </div>
-
-        {{! Alert Demo }}
-        <div class="bg-white p-6 rounded-lg shadow-sm border mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">Alert (Exercise 15)</h3>
-          <p class="text-sm text-gray-600 mb-4">Demonstrates @tracked for declarative styling with Tailwind CSS</p>
-          <div class="flex gap-2 mb-4">
-            <button
-              type="button"
-              class="px-3 py-1 text-sm rounded bg-blue-100 text-blue-800 hover:bg-blue-200"
-              {{on "click" (fn this.setAlertVariant "info")}}
-            >Info</button>
-            <button
-              type="button"
-              class="px-3 py-1 text-sm rounded bg-green-100 text-green-800 hover:bg-green-200"
-              {{on "click" (fn this.setAlertVariant "success")}}
-            >Success</button>
-            <button
-              type="button"
-              class="px-3 py-1 text-sm rounded bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
-              {{on "click" (fn this.setAlertVariant "warning")}}
-            >Warning</button>
-            <button
-              type="button"
-              class="px-3 py-1 text-sm rounded bg-red-100 text-red-800 hover:bg-red-200"
-              {{on "click" (fn this.setAlertVariant "error")}}
-            >Error</button>
-          </div>
-          <Alert @variant={{this.alertVariant}}>
-            <strong>Alert Demo:</strong> This alert changes variant based on tracked state. Click the buttons above to see different styles.
-          </Alert>
-        </div>
-
-        {{! AsyncButton Demo }}
-        <div class="bg-white p-6 rounded-lg shadow-sm border mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">AsyncButton (Exercise 17)</h3>
-          <p class="text-sm text-gray-600 mb-4">Uses waitForPromise from @ember/test-waiters for testable async operations</p>
-          <div class="flex gap-4">
-            <AsyncButton
-              @onClick={{this.simulateAsync}}
-              @label="Save Changes"
-              @loadingLabel="Saving..."
-              @successLabel="Saved!"
-              @successDuration={{2000}}
-              class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-blue-300"
-            />
-            <AsyncButton
-              @onClick={{this.simulateError}}
-              @label="Trigger Error"
-              @loadingLabel="Working..."
-              @errorLabel="Failed!"
-              class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:bg-red-300"
-            />
-          </div>
-        </div>
-
-        {{! SearchBox Demo }}
-        <div class="bg-white p-6 rounded-lg shadow-sm border mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">SearchBox (Exercise 18)</h3>
-          <p class="text-sm text-gray-600 mb-4">
-            Uses ember-concurrency with restartable tasks and lastSuccessful pattern.
-            Each SearchBox has its own independent task instance.
-          </p>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <p class="text-xs text-gray-500 mb-2">Search Box 1 (Independent)</p>
-              <SearchBox @placeholder="Search products..." @debounceMs={{300}} />
-            </div>
-            <div>
-              <p class="text-xs text-gray-500 mb-2">Search Box 2 (Independent)</p>
-              <SearchBox @placeholder="Search users..." @debounceMs={{300}} />
-            </div>
-          </div>
-          <p class="text-xs text-gray-500 mt-4 italic">
-            Try typing in both boxes - cancelling one does not affect the other (independent tasks)
-          </p>
-        </div>
-
-        {{! GlobalSearchBox Demo }}
-        <div class="bg-white p-6 rounded-lg shadow-sm border mb-6">
-          <h3 class="text-lg font-medium text-gray-900 mb-4">GlobalSearchBox (Exercise 18)</h3>
-          <p class="text-sm text-gray-600 mb-4">
-            Shares a single task via a service - all instances share the same state.
-            Cancelling from one box cancels for all.
-          </p>
-          <div class="grid md:grid-cols-2 gap-4">
-            <div>
-              <p class="text-xs text-gray-500 mb-2">Global Search 1 (Shared)</p>
-              <GlobalSearchBox @placeholder="Global search..." />
-            </div>
-            <div>
-              <p class="text-xs text-gray-500 mb-2">Global Search 2 (Shared)</p>
-              <GlobalSearchBox @placeholder="Also global..." />
-            </div>
-          </div>
-          <p class="text-xs text-gray-500 mt-4 italic">
-            Both boxes share the same results, history, and task - search from either to see shared state
-          </p>
-        </div>
-      </section>
-
-      {{! Key Concepts }}
-      <section class="mb-12">
-        <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-2">
-          Key Concepts Covered
-        </h2>
-        <div class="grid md:grid-cols-2 gap-6">
-          <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900 mb-2">State Management</h3>
-            <ul class="text-sm text-gray-600 space-y-1">
-              <li>@tracked for reactive state</li>
-              <li>@cached for expensive computations</li>
-              <li>Services for shared state</li>
-            </ul>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900 mb-2">Async Patterns</h3>
-            <ul class="text-sm text-gray-600 space-y-1">
-              <li>ember-concurrency tasks</li>
-              <li>lastSuccessful for stale-while-revalidate</li>
-              <li>Test waiters for async testing</li>
-            </ul>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900 mb-2">Component Patterns</h3>
-            <ul class="text-sm text-gray-600 space-y-1">
-              <li>Glimmer components with signatures</li>
-              <li>Yields and blocks</li>
-              <li>Modifiers for DOM interactions</li>
-            </ul>
-          </div>
-          <div class="bg-white p-6 rounded-lg shadow-sm border">
-            <h3 class="font-medium text-gray-900 mb-2">Cleanup & Lifecycle</h3>
-            <ul class="text-sm text-gray-600 space-y-1">
-              <li>registerDestructor for cleanup</li>
-              <li>Modifier cleanup functions</li>
-              <li>isDestroying checks for async</li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {{! Footer }}
-      <footer class="text-center text-gray-500 text-sm">
-        <p>
-          Built with Ember.js, TypeScript, Glint, Tailwind CSS, and ember-concurrency
-        </p>
-      </footer>
-    </div>
-  </template>
-}
+import { Button } from 'ember-learning/components/ui/button';
+import { Badge } from 'ember-learning/components/ui/badge';
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from 'ember-learning/components/ui/card';
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from 'ember-learning/components/ui/table';
+import { Separator } from 'ember-learning/components/ui/separator';
+import {
+  exercises,
+  prerequisites,
+  learningCategories,
+  techStack,
+  links,
+} from 'ember-learning/data/course-data';
 
 <template>
-  <DemoPage />
+  <div class="min-h-screen bg-background">
+    {{! Navigation }}
+    <nav class="bg-card border-b sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 bg-gradient-to-br from-orange-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
+                <span class="text-white font-bold text-lg">E</span>
+              </div>
+              <span class="text-xl font-bold text-foreground">Ember Learning</span>
+            </div>
+          </div>
+          <div class="flex items-center space-x-2">
+            <Button @variant="ghost" @class="text-primary">
+              Home
+            </Button>
+            <Button @asChild={{true}} @variant="ghost">
+              <:default as |b|>
+                <LinkTo @route="demo" class={{b.classes}}>
+                  Demo
+                </LinkTo>
+              </:default>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    {{! Hero Section }}
+    <header class="relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-red-500/10"></div>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
+        <div class="text-center max-w-4xl mx-auto">
+          <h1 class="text-5xl sm:text-6xl font-extrabold text-foreground mb-6 tracking-tight">
+            Learn Modern
+            <span class="bg-gradient-to-r from-orange-500 to-red-600 bg-clip-text text-transparent">
+              Ember.js
+            </span>
+          </h1>
+          <p class="text-xl text-muted-foreground mb-10 leading-relaxed">
+            A hands-on learning project featuring 19 exercises that cover routing, components,
+            services, testing, and modern Ember patterns with TypeScript and Glint.
+          </p>
+          <div class="flex flex-wrap justify-center gap-4">
+            <Button @asChild={{true}} @size="lg" @class="bg-gradient-to-r from-orange-500 to-red-600 hover:from-orange-600 hover:to-red-700 shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all transform hover:-translate-y-0.5">
+              <:default as |b|>
+                <LinkTo @route="demo" class={{b.classes}}>
+                  Try the Demo
+                </LinkTo>
+              </:default>
+            </Button>
+            <Button @variant="outline" @size="lg" @class="shadow-sm">
+              <a
+                href={{links.github}}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                View on GitHub
+              </a>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {{! Tech Stack }}
+      <section class="mb-20">
+        <div class="flex flex-wrap justify-center gap-3">
+          {{#each techStack as |tech|}}
+            <Badge @variant="outline" @class="px-4 py-2 text-sm">
+              {{tech}}
+            </Badge>
+          {{/each}}
+        </div>
+      </section>
+
+      {{! Learning Goals }}
+      <section class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-foreground mb-4">What You'll Learn</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Master modern Ember.js patterns through practical exercises covering these key areas.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {{#each learningCategories as |category|}}
+            <Card @class="overflow-hidden hover:shadow-lg transition-shadow">
+              <CardHeader @class="bg-gradient-to-r from-primary/10 to-primary/5 border-b pb-4">
+                <CardTitle @class="flex items-center gap-3">
+                  <span class="text-2xl">{{category.icon}}</span>
+                  <span>{{category.title}}</span>
+                </CardTitle>
+              </CardHeader>
+              <CardContent @class="pt-4">
+                <ul class="space-y-2">
+                  {{#each category.items as |item|}}
+                    <li class="flex items-start text-sm text-muted-foreground">
+                      <svg class="w-5 h-5 text-emerald-500 mr-2 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                      </svg>
+                      {{item}}
+                    </li>
+                  {{/each}}
+                </ul>
+              </CardContent>
+            </Card>
+          {{/each}}
+        </div>
+      </section>
+
+      {{! Prerequisites }}
+      <section class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-foreground mb-4">Prerequisites</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Complete the <a href={{links.emberTutorial}} target="_blank" rel="noopener noreferrer" class="text-primary hover:underline">Ember Tutorial</a> first, then ensure you're familiar with these concepts.
+          </p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          {{#each prerequisites as |category|}}
+            <Card>
+              <CardHeader>
+                <CardTitle @class="flex items-center gap-3">
+                  <span class="w-8 h-8 {{category.iconBg}} rounded-lg flex items-center justify-center">
+                    <span class="{{category.iconColor}} font-bold text-sm">{{category.icon}}</span>
+                  </span>
+                  {{category.title}}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul class="space-y-2 text-sm">
+                  {{#each category.items as |item|}}
+                    <li class="flex items-center">
+                      <span class="w-1.5 h-1.5 bg-muted-foreground rounded-full mr-3"></span>
+                      <a href={{item.url}} target="_blank" rel="noopener noreferrer" class="text-muted-foreground hover:text-primary hover:underline">{{item.label}}</a>
+                    </li>
+                  {{/each}}
+                </ul>
+              </CardContent>
+            </Card>
+          {{/each}}
+        </div>
+      </section>
+
+      {{! Exercises }}
+      <section class="mb-20">
+        <div class="text-center mb-12">
+          <h2 class="text-3xl font-bold text-foreground mb-4">19 Exercises</h2>
+          <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Progress from basics to advanced patterns with hands-on exercises.
+          </p>
+        </div>
+        <Card @class="overflow-hidden">
+          <Table>
+            <TableHeader @class="bg-muted/50">
+              <TableRow>
+                <TableHead @class="w-16">#</TableHead>
+                <TableHead>Exercise</TableHead>
+                <TableHead>Key Concepts</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {{#each exercises as |exercise|}}
+                <TableRow>
+                  <TableCell>
+                    <Badge @class="bg-gradient-to-br from-orange-500 to-red-600 text-white border-0">
+                      {{exercise.number}}
+                    </Badge>
+                  </TableCell>
+                  <TableCell @class="font-medium">
+                    <a
+                      href="{{links.github}}/blob/main/exercises/{{exercise.number}}-{{exercise.slug}}.md"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:text-primary hover:underline"
+                    >
+                      {{exercise.title}}
+                    </a>
+                  </TableCell>
+                  <TableCell @class="text-muted-foreground">
+                    {{exercise.concepts}}
+                  </TableCell>
+                </TableRow>
+              {{/each}}
+            </TableBody>
+          </Table>
+        </Card>
+      </section>
+
+    </main>
+
+    {{! Footer }}
+    <footer class="bg-card border-t">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Separator @class="mb-6" />
+        <p class="text-center text-muted-foreground text-sm">
+          Built with Ember.js, TypeScript, Glint, Tailwind CSS, and ember-concurrency
+        </p>
+      </div>
+    </footer>
+  </div>
 </template>
