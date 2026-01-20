@@ -1,6 +1,21 @@
 import { LinkTo } from '@ember/routing';
+import type { TOC } from '@ember/component/template-only';
 
-<template>
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+}
+
+interface Signature {
+  Args: {
+    model: Product[];
+  };
+  Element: HTMLDivElement;
+}
+
+const ProductsTemplate: TOC<Signature> = <template>
   <div>
     <h1>Products</h1>
     <div>
@@ -14,4 +29,6 @@ import { LinkTo } from '@ember/routing';
     </div>
     {{outlet}}
   </div>
-</template>
+</template>;
+
+export default ProductsTemplate;

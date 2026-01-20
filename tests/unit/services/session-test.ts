@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import type { SessionService } from 'ember-learning/services/session';
+import type SessionService from 'ember-learning/services/session';
 
 module('Unit | Service | session', function (hooks) {
   setupTest(hooks);

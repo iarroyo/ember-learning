@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click } from '@ember/test-helpers';
 import { CartSummary } from 'ember-learning/components/cart-summary';
-import type { ShoppingCartService } from 'ember-learning/services/shopping-cart';
+import type ShoppingCartService from 'ember-learning/services/shopping-cart';
 
 module('Integration | Component | cart-summary', function (hooks) {
   setupRenderingTest(hooks);

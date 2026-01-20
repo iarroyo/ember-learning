@@ -20,7 +20,7 @@ const focusOnInsert = modifier((element: HTMLElement) => {
     'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
   );
   if (focusableElements.length > 0) {
-    focusableElements[0].focus();
+    focusableElements[0]!.focus();
   } else {
     element.setAttribute('tabindex', '-1');
     element.focus();

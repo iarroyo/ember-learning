@@ -1,14 +1,16 @@
 import Route from '@ember/routing/route';
 import { inject as service } from '@ember/service';
-import type { SessionService } from 'ember-learning/services/session';
+import type RouterService from '@ember/routing/router-service';
+import type SessionService from 'ember-learning/services/session';
 
 export class DashboardRoute extends Route {
   @service declare session: SessionService;
+  @service declare router: RouterService;
 
   async beforeModel(): Promise<void> {
     await this.session.restoreSession();
     if (!this.session.isAuthenticated) {
-      this.transitionTo('login');
+      this.router.transitionTo('login');
     }
   }
 
@@ -18,7 +20,7 @@ export class DashboardRoute extends Route {
       userName: this.session.currentUser?.name || 'User',
       handleLogout: () => {
         route.session.logout();
-        route.transitionTo('login');
+        route.router.transitionTo('login');
       }
     };
   }

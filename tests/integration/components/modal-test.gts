@@ -237,7 +237,7 @@ module('Integration | Component | modal', function (hooks) {
     const activeElement = document.activeElement;
 
     assert.true(
-      modal.contains(activeElement),
+      modal?.contains(activeElement),
       'Focus is within modal'
     );
   });

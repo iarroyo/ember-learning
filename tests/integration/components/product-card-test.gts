@@ -2,6 +2,7 @@ import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, click } from '@ember/test-helpers';
 import { ProductCard } from 'ember-learning/components/product-card';
+import type ShoppingCartService from 'ember-learning/services/shopping-cart';
 
 module('Integration | Component | product-card', function (hooks) {
   setupRenderingTest(hooks);
@@ -42,7 +43,7 @@ module('Integration | Component | product-card', function (hooks) {
   });
 
   test('add to cart button calls shopping cart service', async function (assert) {
-    const shoppingCart = this.owner.lookup('service:shopping-cart');
+    const shoppingCart = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
     const product = {
       id: '1',
       name: 'Test Product',
@@ -60,6 +61,6 @@ module('Integration | Component | product-card', function (hooks) {
     await click('[data-test-add-to-cart]');
 
     assert.strictEqual(shoppingCart.itemCount, 1);
-    assert.strictEqual(shoppingCart.items[0].name, 'Test Product');
+    assert.strictEqual(shoppingCart.items[0]!.name, 'Test Product');
   });
 });

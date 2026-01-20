@@ -1,6 +1,6 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
-import type { Transition } from '@ember/routing/transition';
+import type Transition from '@ember/routing/transition';
 import { waitForPromise } from '@ember/test-waiters';
 
 export interface User {

@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import type { ProductsProductRoute } from 'ember-learning/routes/products/product';
+import type ProductsProductRoute from 'ember-learning/routes/products/product';
 
 module('Unit | Route | products/product', function (hooks) {
   setupTest(hooks);

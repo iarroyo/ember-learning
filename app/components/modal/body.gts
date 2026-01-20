@@ -2,6 +2,9 @@ import type { TOC } from '@ember/component/template-only';
 
 export interface ModalBodySignature {
   Args: Record<string, never>;
+  Blocks: {
+    default: [];
+  };
   Element: HTMLDivElement;
 }
 

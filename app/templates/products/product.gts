@@ -1,6 +1,21 @@
 import { LinkTo } from '@ember/routing';
+import type { TOC } from '@ember/component/template-only';
 
-<template>
+interface Product {
+  id: string;
+  name: string;
+  price: number;
+  image?: string;
+}
+
+interface Signature {
+  Args: {
+    model: Product | null;
+  };
+  Element: HTMLDivElement;
+}
+
+const ProductTemplate: TOC<Signature> = <template>
   {{#if @model}}
     <div data-test-product-detail>
       <LinkTo @route="products" data-test-back-link>Back to Products</LinkTo>
@@ -13,4 +28,6 @@ import { LinkTo } from '@ember/routing';
       <LinkTo @route="products" data-test-back-link>Back to Products</LinkTo>
     </div>
   {{/if}}
-</template>
+</template>;
+
+export default ProductTemplate;

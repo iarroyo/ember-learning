@@ -78,10 +78,10 @@ module('Unit | Utility | async-resource', function (hooks) {
 
   test('cancel aborts pending request', async function (assert) {
     const resource = new AsyncResource(
-      (signal: AbortSignal) =>
+      (signal?: AbortSignal) =>
         new Promise((resolve, reject) => {
           const timeout = setTimeout(() => resolve('data'), 1000);
-          signal.addEventListener('abort', () => {
+          signal?.addEventListener('abort', () => {
             clearTimeout(timeout);
             reject(new DOMException('Aborted', 'AbortError'));
           });

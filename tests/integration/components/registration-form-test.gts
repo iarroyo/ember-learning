@@ -246,7 +246,7 @@ module('Integration | Component | registration-form', function (hooks) {
   test('calls onSubmit with form data when submitted', async function (assert) {
     assert.expect(4);
 
-    const handleSubmit = (data) => {
+    const handleSubmit = (data: { username: string; email: string; password: string }) => {
       assert.strictEqual(data.username, 'valid_user');
       assert.strictEqual(data.email, 'user@example.com');
       assert.strictEqual(data.password, 'ValidPass123');

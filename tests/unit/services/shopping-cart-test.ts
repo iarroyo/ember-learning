@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { setupTest } from 'ember-qunit';
-import type { ShoppingCartService } from 'ember-learning/services/shopping-cart';
+import type ShoppingCartService from 'ember-learning/services/shopping-cart';
 
 module('Unit | Service | shopping-cart', function (hooks) {
   setupTest(hooks);
@@ -21,8 +21,8 @@ module('Unit | Service | shopping-cart', function (hooks) {
     service.addItem(product);
 
     assert.strictEqual(service.items.length, 1);
-    assert.strictEqual(service.items[0].name, 'Widget');
-    assert.strictEqual(service.items[0].quantity, 1);
+    assert.strictEqual(service.items[0]!.name, 'Widget');
+    assert.strictEqual(service.items[0]!.quantity, 1);
     assert.strictEqual(service.itemCount, 1);
   });
 
@@ -35,7 +35,7 @@ module('Unit | Service | shopping-cart', function (hooks) {
     service.addItem(product);
 
     assert.strictEqual(service.items.length, 1);
-    assert.strictEqual(service.items[0].quantity, 3);
+    assert.strictEqual(service.items[0]!.quantity, 3);
     assert.strictEqual(service.itemCount, 3);
   });
 
@@ -59,7 +59,7 @@ module('Unit | Service | shopping-cart', function (hooks) {
     service.removeItem('1');
 
     assert.strictEqual(service.items.length, 1);
-    assert.strictEqual(service.items[0].id, '2');
+    assert.strictEqual(service.items[0]!.id, '2');
   });
 
   test('updateQuantity changes item quantity', function (assert) {
@@ -68,7 +68,7 @@ module('Unit | Service | shopping-cart', function (hooks) {
     service.addItem({ id: '1', name: 'Widget', price: 9.99 });
     service.updateQuantity('1', 5);
 
-    assert.strictEqual(service.items[0].quantity, 5);
+    assert.strictEqual(service.items[0]!.quantity, 5);
     assert.strictEqual(service.itemCount, 5);
   });
 
