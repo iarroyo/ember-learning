@@ -32,11 +32,7 @@ class ModalTrigger extends Component<ModalTriggerSignature> {
   }
 
   <template>
-    <button
-      type="button"
-      {{on "click" this.handleClick}}
-      ...attributes
-    >
+    <button type="button" {{on "click" this.handleClick}} ...attributes>
       {{yield}}
     </button>
   </template>
@@ -52,22 +48,16 @@ export interface ModalHeaderSignature {
   Element: HTMLDivElement;
 }
 
-const ModalHeader = <TOC<ModalHeaderSignature>>(
-  <template>
-    <div data-test-modal-header>
-      <h2 data-test-modal-title id={{@titleId}}>{{@title}}</h2>
-      {{#if @onClose}}
-        <button
-          data-test-modal-close
-          type="button"
-          {{on "click" @onClose}}
-        >
-          ×
-        </button>
-      {{/if}}
-    </div>
-  </template>
-);
+const ModalHeader = <TOC<ModalHeaderSignature>><template>
+  <div data-test-modal-header>
+    <h2 data-test-modal-title id={{@titleId}}>{{@title}}</h2>
+    {{#if @onClose}}
+      <button data-test-modal-close type="button" {{on "click" @onClose}}>
+        ×
+      </button>
+    {{/if}}
+  </div>
+</template>;
 
 // ModalBody Component
 export interface ModalBodySignature {
@@ -78,13 +68,11 @@ export interface ModalBodySignature {
   Element: HTMLDivElement;
 }
 
-const ModalBody = <TOC<ModalBodySignature>>(
-  <template>
-    <div data-test-modal-body>
-      {{yield}}
-    </div>
-  </template>
-);
+const ModalBody = <TOC<ModalBodySignature>><template>
+  <div data-test-modal-body>
+    {{yield}}
+  </div>
+</template>;
 
 // ModalFooter Component
 export interface ModalFooterSignature {
@@ -95,13 +83,11 @@ export interface ModalFooterSignature {
   Element: HTMLDivElement;
 }
 
-const ModalFooter = <TOC<ModalFooterSignature>>(
-  <template>
-    <div data-test-modal-footer>
-      {{yield}}
-    </div>
-  </template>
-);
+const ModalFooter = <TOC<ModalFooterSignature>><template>
+  <div data-test-modal-footer>
+    {{yield}}
+  </div>
+</template>;
 
 // Focus modifier
 const focusOnInsert = modifier((element: HTMLElement) => {
@@ -126,14 +112,16 @@ interface ModalSignature {
     onClose?: () => void;
   };
   Blocks: {
-    default: [{
-      Trigger: ComponentLike<ModalTriggerSignature>;
-      Header: ComponentLike<ModalHeaderSignature>;
-      Body: ComponentLike<ModalBodySignature>;
-      Footer: ComponentLike<ModalFooterSignature>;
-      close: () => void;
-      isOpen: boolean;
-    }];
+    default: [
+      {
+        Trigger: ComponentLike<ModalTriggerSignature>;
+        Header: ComponentLike<ModalHeaderSignature>;
+        Body: ComponentLike<ModalBodySignature>;
+        Footer: ComponentLike<ModalFooterSignature>;
+        close: () => void;
+        isOpen: boolean;
+      },
+    ];
   };
   Element: HTMLDivElement;
 }
@@ -176,7 +164,10 @@ export class Modal extends Component<ModalSignature> {
 
   @action
   handleBackdropClick(event: MouseEvent): void {
-    if (this.args.closeOnBackdropClick !== false && event.target === event.currentTarget) {
+    if (
+      this.args.closeOnBackdropClick !== false &&
+      event.target === event.currentTarget
+    ) {
       this.close();
     }
   }
@@ -199,15 +190,18 @@ export class Modal extends Component<ModalSignature> {
       (component ModalHeader titleId=this.titleId onClose=this.close)
       (component ModalBody)
       (component ModalFooter)
-      as |Trigger Header Body Footer|}}
-      {{yield (hash
-        Trigger=Trigger
-        Header=Header
-        Body=Body
-        Footer=Footer
-        close=this.close
-        isOpen=this.isOpen
-      )}}
+      as |Trigger Header Body Footer|
+    }}
+      {{yield
+        (hash
+          Trigger=Trigger
+          Header=Header
+          Body=Body
+          Footer=Footer
+          close=this.close
+          isOpen=this.isOpen
+        )
+      }}
 
       {{#if this.isOpen}}
         <div
@@ -223,22 +217,21 @@ export class Modal extends Component<ModalSignature> {
             class="modal-backdrop"
             {{on "click" this.handleBackdropClick}}
           >
-            <div
-              data-test-modal-content
-              class={{this.sizeClass}}
-            >
-              {{yield (hash
-                Trigger=Trigger
-                Header=Header
-                Body=Body
-                Footer=Footer
-                close=this.close
-                isOpen=this.isOpen
-              )}}
+            <div data-test-modal-content class={{this.sizeClass}}>
+              {{yield
+                (hash
+                  Trigger=Trigger
+                  Header=Header
+                  Body=Body
+                  Footer=Footer
+                  close=this.close
+                  isOpen=this.isOpen
+                )
+              }}
             </div>
           </div>
         </div>
       {{/if}}
     {{/let}}
-  </template>;
+  </template>
 }

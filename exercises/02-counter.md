@@ -3,6 +3,7 @@
 **Difficulty: Low**
 
 ## Objective
+
 Create an interactive counter component with increment, decrement, and reset functionality.
 
 ## Requirements

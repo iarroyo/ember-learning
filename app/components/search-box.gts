@@ -30,7 +30,11 @@ async function mockSearch(query: string): Promise<SearchResult[]> {
   // Return mock results based on query
   return [
     { id: '1', title: `Result for "${query}" #1`, description: 'First result' },
-    { id: '2', title: `Result for "${query}" #2`, description: 'Second result' },
+    {
+      id: '2',
+      title: `Result for "${query}" #2`,
+      description: 'Second result',
+    },
     { id: '3', title: `Result for "${query}" #3`, description: 'Third result' },
   ];
 }
@@ -76,14 +80,14 @@ export class SearchBox extends Component<SearchBoxSignature> {
   @action
   handleInput(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
-    this.searchTask.perform(query);
+    void this.searchTask.perform(query);
   }
 
   @action
   cancel(): void {
     // Only cancels THIS component's task instance
     // Does NOT affect other SearchBox components
-    this.searchTask.cancelAll();
+    void this.searchTask.cancelAll();
   }
 
   <template>
@@ -117,14 +121,17 @@ export class SearchBox extends Component<SearchBoxSignature> {
       {{#if this.hasResults}}
         <div class="mt-2">
           <div data-test-search-results-count class="text-sm text-gray-500">
-            {{this.results.length}} results
+            {{this.results.length}}
+            results
           </div>
           <ul class="mt-1 space-y-1">
             {{#each this.results as |result|}}
               <li data-test-search-result class="p-2 bg-gray-50 rounded">
                 <div class="font-medium">{{result.title}}</div>
                 {{#if result.description}}
-                  <div class="text-sm text-gray-500">{{result.description}}</div>
+                  <div
+                    class="text-sm text-gray-500"
+                  >{{result.description}}</div>
                 {{/if}}
               </li>
             {{/each}}

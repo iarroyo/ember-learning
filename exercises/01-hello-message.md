@@ -3,6 +3,7 @@
 **Difficulty: Low**
 
 ## Objective
+
 Create a simple Glimmer component that displays a personalized greeting message.
 
 ## Requirements
@@ -27,7 +28,7 @@ interface HelloMessageSignature {
 ## Usage Example
 
 ```handlebars
-<HelloMessage @name="Alice" />
+<HelloMessage @name='Alice' />
 {{! Renders: Hello, Alice! }}
 
 <HelloMessage />

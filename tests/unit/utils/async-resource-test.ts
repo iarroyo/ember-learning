@@ -18,7 +18,10 @@ module('Unit | Utility | async-resource', function (hooks) {
   test('loading state is set while fetching', async function (assert) {
     let resolvePromise: (value: string) => void;
     const resource = new AsyncResource(
-      () => new Promise((resolve) => { resolvePromise = resolve; })
+      () =>
+        new Promise((resolve) => {
+          resolvePromise = resolve;
+        })
     );
 
     const loadPromise = resource.load();

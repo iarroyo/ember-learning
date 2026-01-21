@@ -10,7 +10,7 @@ module('Integration | Component | data-fetcher', function (hooks) {
   test('renders loading state initially', async function (assert) {
     const fetchFn = () => new Promise(() => {}); // Never resolves
 
-    render(
+    void render(
       <template>
         <DataFetcher @fetch={{fetchFn}} as |resource|>
           {{#if resource.isLoading}}
@@ -109,7 +109,7 @@ module('Integration | Component | data-fetcher', function (hooks) {
     assert.dom('[data-test-count]').hasText('1');
 
     // Wait for auto-refresh
-    await new Promise(resolve => setTimeout(resolve, 150));
+    await new Promise((resolve) => setTimeout(resolve, 150));
 
     assert.dom('[data-test-count]').hasText('2');
   });

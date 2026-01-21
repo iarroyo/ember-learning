@@ -1,6 +1,9 @@
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
-import { registerDestructor, associateDestroyableChild } from '@ember/destroyable';
+import {
+  registerDestructor,
+  associateDestroyableChild,
+} from '@ember/destroyable';
 import { modifier } from 'ember-modifier';
 import type Owner from '@ember/owner';
 
@@ -68,7 +71,7 @@ export class KeyboardShortcuts extends Component<KeyboardShortcutsSignature> {
     associateDestroyableChild(this, this.manager);
 
     // Run async initialization
-    this.initialize();
+    void this.initialize();
   }
 
   async initialize(): Promise<void> {

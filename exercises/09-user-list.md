@@ -3,6 +3,7 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Create a component that fetches and displays a list of users with loading, error, and retry states using the AsyncResource utility.
 
 ## Requirements
@@ -49,10 +50,30 @@ interface UserListSignature {
 
 ```typescript
 const mockUsers: User[] = [
-  { firstName: 'John', lastName: 'Doe', email: 'john@example.com', isOnline: true },
-  { firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', isOnline: false },
-  { firstName: 'Bob', lastName: 'Johnson', email: 'bob@example.com', isOnline: true },
-  { firstName: 'Alice', lastName: 'Williams', email: 'alice@example.com', isOnline: true },
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    isOnline: true,
+  },
+  {
+    firstName: 'Jane',
+    lastName: 'Smith',
+    email: 'jane@example.com',
+    isOnline: false,
+  },
+  {
+    firstName: 'Bob',
+    lastName: 'Johnson',
+    email: 'bob@example.com',
+    isOnline: true,
+  },
+  {
+    firstName: 'Alice',
+    lastName: 'Williams',
+    email: 'alice@example.com',
+    isOnline: true,
+  },
 ];
 ```
 

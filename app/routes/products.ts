@@ -14,7 +14,7 @@ const mockProducts: Product[] = [
 ];
 
 export default class ProductsRoute extends Route {
-  async model(): Promise<Product[]> {
+  model(): Product[] {
     return mockProducts;
   }
 }

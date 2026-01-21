@@ -3,6 +3,7 @@
 **Difficulty: Difficult**
 
 ## Objective
+
 Create a generic data fetcher component that yields loading, error, and success states to its block, enabling flexible async data patterns.
 
 ## Requirements
@@ -24,15 +25,17 @@ interface DataFetcherSignature<T = unknown> {
     refreshInterval?: number;
   };
   Blocks: {
-    default: [{
-      isLoading: boolean;
-      isSuccess: boolean;
-      isError: boolean;
-      isEmpty: boolean;
-      data: T | null;
-      error: Error | null;
-      retry: () => void;
-    }];
+    default: [
+      {
+        isLoading: boolean;
+        isSuccess: boolean;
+        isError: boolean;
+        isEmpty: boolean;
+        data: T | null;
+        error: Error | null;
+        retry: () => void;
+      },
+    ];
   };
   Element: HTMLDivElement;
 }
@@ -54,7 +57,7 @@ interface DataFetcherSignature<T = unknown> {
     <LoadingSpinner />
   {{else if state.isError}}
     <ErrorMessage @error={{state.error}} />
-    <button {{on "click" state.retry}}>Retry</button>
+    <button {{on 'click' state.retry}}>Retry</button>
   {{else}}
     {{#each state.data as |product|}}
       <ProductCard @product={{product}} />

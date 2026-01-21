@@ -19,7 +19,7 @@ interface ProfileEditorSignature {
 }
 
 // Helper to track render count - increments each time it's called in template
-let renderCounters = new WeakMap<object, number>();
+const renderCounters = new WeakMap<object, number>();
 
 function getRenderCount(component: object): number {
   const current = renderCounters.get(component) ?? 0;
@@ -195,10 +195,15 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
     >
       <div class="mb-4">
         <h3 class="text-lg font-semibold mb-1">
-          {{if (eq @mode "object") "Object Mode (Anti-pattern)" "Granular Mode (Recommended)"}}
+          {{if
+            (eq @mode "object")
+            "Object Mode (Anti-pattern)"
+            "Granular Mode (Recommended)"
+          }}
         </h3>
         <p class="text-sm text-gray-500">
-          {{if (eq @mode "object")
+          {{if
+            (eq @mode "object")
             "Single @tracked object - must reassign on every change"
             "Individual @tracked properties - simple direct assignment"
           }}

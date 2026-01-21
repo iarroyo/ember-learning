@@ -34,14 +34,18 @@ export class ProductCard extends Component<ProductCardSignature> {
     this.shoppingCart.addItem({
       id: this.args.product.id,
       name: this.args.product.name,
-      price: this.args.product.price
+      price: this.args.product.price,
     });
   }
 
   <template>
     <div>
       {{#if @product.image}}
-        <img data-test-product-image src={{@product.image}} alt={{@product.name}} />
+        <img
+          data-test-product-image
+          src={{@product.image}}
+          alt={{@product.name}}
+        />
       {{/if}}
       <a data-test-product-link href={{this.productLink}}>
         <div data-test-product-name>{{@product.name}}</div>
@@ -51,5 +55,5 @@ export class ProductCard extends Component<ProductCardSignature> {
         Add to Cart
       </button>
     </div>
-  </template>;
+  </template>
 }

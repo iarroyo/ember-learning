@@ -3,6 +3,7 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Create a user card component that displays user information with optional avatar, online status, and contact functionality.
 
 ## Requirements
@@ -61,9 +62,9 @@ interface UserCardSignature {
 ```handlebars
 <UserCard
   @user={{hash
-    firstName="John"
-    lastName="Doe"
-    email="john@example.com"
+    firstName='John'
+    lastName='Doe'
+    email='john@example.com'
     isOnline=true
   }}
   @onContact={{this.handleContact}}

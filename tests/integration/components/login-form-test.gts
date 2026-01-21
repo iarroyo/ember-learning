@@ -11,11 +11,7 @@ module('Integration | Component | login-form', function (hooks) {
   });
 
   test('it renders login form fields', async function (assert) {
-    await render(
-      <template>
-        <LoginForm />
-      </template>
-    );
+    await render(<template><LoginForm /></template>);
 
     assert.dom('[data-test-email-input]').exists();
     assert.dom('[data-test-password-input]').exists();
@@ -23,21 +19,13 @@ module('Integration | Component | login-form', function (hooks) {
   });
 
   test('submit button is disabled when fields are empty', async function (assert) {
-    await render(
-      <template>
-        <LoginForm />
-      </template>
-    );
+    await render(<template><LoginForm /></template>);
 
     assert.dom('[data-test-submit-button]').isDisabled();
   });
 
   test('submit button is enabled when fields are filled', async function (assert) {
-    await render(
-      <template>
-        <LoginForm />
-      </template>
-    );
+    await render(<template><LoginForm /></template>);
 
     await fillIn('[data-test-email-input]', 'user@example.com');
     await fillIn('[data-test-password-input]', 'password123');
@@ -46,17 +34,13 @@ module('Integration | Component | login-form', function (hooks) {
   });
 
   test('shows loading state during login', async function (assert) {
-    await render(
-      <template>
-        <LoginForm />
-      </template>
-    );
+    await render(<template><LoginForm /></template>);
 
     await fillIn('[data-test-email-input]', 'user@example.com');
     await fillIn('[data-test-password-input]', 'password123');
 
     // Click without waiting for completion
-    click('[data-test-submit-button]');
+    void click('[data-test-submit-button]');
 
     // Check loading state appears
     await waitFor('[data-test-loading]');
@@ -64,11 +48,7 @@ module('Integration | Component | login-form', function (hooks) {
   });
 
   test('shows error message for invalid credentials', async function (assert) {
-    await render(
-      <template>
-        <LoginForm />
-      </template>
-    );
+    await render(<template><LoginForm /></template>);
 
     await fillIn('[data-test-email-input]', 'user@example.com');
     await fillIn('[data-test-password-input]', 'wrongpassword');
@@ -86,9 +66,7 @@ module('Integration | Component | login-form', function (hooks) {
     };
 
     await render(
-      <template>
-        <LoginForm @onSuccess={{handleSuccess}} />
-      </template>
+      <template><LoginForm @onSuccess={{handleSuccess}} /></template>
     );
 
     await fillIn('[data-test-email-input]', 'user@example.com');

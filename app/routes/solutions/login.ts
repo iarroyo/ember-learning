@@ -7,19 +7,18 @@ export class LoginRoute extends Route {
   @service declare session: SessionService;
   @service declare router: RouterService;
 
-  async beforeModel(): Promise<void> {
-    await this.session.restoreSession();
+  beforeModel(): void {
+    this.session.restoreSession();
     if (this.session.isAuthenticated) {
       this.router.transitionTo('dashboard');
     }
   }
 
   model(): { onSuccess: () => void } {
-    const route = this;
     return {
       onSuccess: () => {
-        route.router.transitionTo('dashboard');
-      }
+        this.router.transitionTo('dashboard');
+      },
     };
   }
 }

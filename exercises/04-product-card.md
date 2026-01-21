@@ -3,6 +3,7 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Create a product card component that displays product information and integrates with a shopping cart service.
 
 ## Requirements
@@ -44,7 +45,7 @@ interface ProductCardSignature {
 ## Usage Example
 
 ```handlebars
-<ProductCard @product={{hash id="1" name="Widget" price=19.99}} />
+<ProductCard @product={{hash id='1' name='Widget' price=19.99}} />
 ```
 
 ## Tests to Pass

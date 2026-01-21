@@ -32,13 +32,15 @@ class Separator extends Component<SeparatorSignature> {
     return this.args.orientation ?? 'horizontal';
   }
 
-  <template><div
-  class={{this.classes}}
-  data-orientation={{this.orientation}}
-  data-slot="separator"
-  role={{this.role}}
-  ...attributes
-  ></div></template>
+  <template>
+    <div
+      class={{this.classes}}
+      data-orientation={{this.orientation}}
+      data-slot="separator"
+      role={{this.role}}
+      ...attributes
+    ></div>
+  </template>
 }
 
 export { Separator };

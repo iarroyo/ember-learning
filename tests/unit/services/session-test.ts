@@ -23,7 +23,7 @@ module('Unit | Service | session', function (hooks) {
 
     await service.login({
       email: 'user@example.com',
-      password: 'password123'
+      password: 'password123',
     });
 
     assert.true(service.isAuthenticated);
@@ -38,7 +38,7 @@ module('Unit | Service | session', function (hooks) {
     try {
       await service.login({
         email: 'user@example.com',
-        password: 'wrongpassword'
+        password: 'wrongpassword',
       });
       assert.ok(false, 'Should have thrown');
     } catch (error) {
@@ -53,7 +53,7 @@ module('Unit | Service | session', function (hooks) {
 
     await service.login({
       email: 'user@example.com',
-      password: 'password123'
+      password: 'password123',
     });
 
     assert.true(service.isAuthenticated);
@@ -66,23 +66,23 @@ module('Unit | Service | session', function (hooks) {
     assert.strictEqual(localStorage.getItem('auth-token'), null);
   });
 
-  test('restoreSession restores from localStorage', async function (assert) {
+  test('restoreSession restores from localStorage', function (assert) {
     // Pre-set a valid token
     const token = btoa('user@example.com:' + Date.now());
     localStorage.setItem('auth-token', token);
 
     const service = this.owner.lookup('service:session') as SessionService;
-    await service.restoreSession();
+    service.restoreSession();
 
     assert.true(service.isAuthenticated);
     assert.strictEqual(service.currentUser?.email, 'user@example.com');
   });
 
-  test('restoreSession handles invalid token gracefully', async function (assert) {
+  test('restoreSession handles invalid token gracefully', function (assert) {
     localStorage.setItem('auth-token', 'invalid-token');
 
     const service = this.owner.lookup('service:session') as SessionService;
-    await service.restoreSession();
+    service.restoreSession();
 
     assert.false(service.isAuthenticated);
     assert.strictEqual(localStorage.getItem('auth-token'), null);

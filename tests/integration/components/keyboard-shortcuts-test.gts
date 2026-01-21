@@ -1,7 +1,15 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, triggerKeyEvent, settled, clearRender } from '@ember/test-helpers';
-import { KeyboardShortcuts, onKeydown } from 'ember-learning/components/keyboard-shortcuts';
+import {
+  render,
+  triggerKeyEvent,
+  settled,
+  clearRender,
+} from '@ember/test-helpers';
+import {
+  KeyboardShortcuts,
+  onKeydown,
+} from 'ember-learning/components/keyboard-shortcuts';
 import { tracked } from '@glimmer/tracking';
 
 module('Integration | Component | keyboard-shortcuts', function (hooks) {
@@ -27,8 +35,18 @@ module('Integration | Component | keyboard-shortcuts', function (hooks) {
     let arrowUpCalled = false;
 
     const shortcuts = new Map<string, () => void>([
-      ['Escape', () => { escapeCalled = true; }],
-      ['ArrowUp', () => { arrowUpCalled = true; }],
+      [
+        'Escape',
+        () => {
+          escapeCalled = true;
+        },
+      ],
+      [
+        'ArrowUp',
+        () => {
+          arrowUpCalled = true;
+        },
+      ],
     ]);
 
     await render(
@@ -50,7 +68,12 @@ module('Integration | Component | keyboard-shortcuts', function (hooks) {
     let callCount = 0;
 
     const shortcuts = new Map<string, () => void>([
-      ['Delete', () => { callCount++; }],
+      [
+        'Delete',
+        () => {
+          callCount++;
+        },
+      ],
     ]);
 
     await render(
@@ -74,16 +97,15 @@ module('Integration | Component | keyboard-shortcuts', function (hooks) {
 
   test('onKeydown modifier responds to element keydown', async function (assert) {
     let enterCalled = false;
-    const handleEnter = () => { enterCalled = true; };
+    const handleEnter = () => {
+      enterCalled = true;
+    };
     const shortcuts = new Map<string, () => void>();
 
     await render(
       <template>
         <KeyboardShortcuts @shortcuts={{shortcuts}}>
-          <input
-            data-test-input
-            {{onKeydown "Enter" handleEnter}}
-          />
+          <input data-test-input {{onKeydown "Enter" handleEnter}} />
         </KeyboardShortcuts>
       </template>
     );
@@ -94,7 +116,9 @@ module('Integration | Component | keyboard-shortcuts', function (hooks) {
 
   test('onKeydown modifier cleans up on element removal', async function (assert) {
     let callCount = 0;
-    const handleEnter = () => { callCount++; };
+    const handleEnter = () => {
+      callCount++;
+    };
     const shortcuts = new Map<string, () => void>();
 
     class State {
@@ -106,10 +130,7 @@ module('Integration | Component | keyboard-shortcuts', function (hooks) {
       <template>
         <KeyboardShortcuts @shortcuts={{shortcuts}}>
           {{#if state.showInput}}
-            <input
-              data-test-input
-              {{onKeydown "Enter" handleEnter}}
-            />
+            <input data-test-input {{onKeydown "Enter" handleEnter}} />
           {{/if}}
         </KeyboardShortcuts>
       </template>
@@ -173,13 +194,19 @@ module('Integration | Component | keyboard-shortcuts', function (hooks) {
 
     await render(
       <template>
-        <KeyboardShortcuts @shortcuts={{shortcuts}} class="custom-class" data-custom="test">
+        <KeyboardShortcuts
+          @shortcuts={{shortcuts}}
+          class="custom-class"
+          data-custom="test"
+        >
           <span>Content</span>
         </KeyboardShortcuts>
       </template>
     );
 
     assert.dom('[data-test-keyboard-shortcuts]').hasClass('custom-class');
-    assert.dom('[data-test-keyboard-shortcuts]').hasAttribute('data-custom', 'test');
+    assert
+      .dom('[data-test-keyboard-shortcuts]')
+      .hasAttribute('data-custom', 'test');
   });
 });

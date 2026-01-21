@@ -1,4 +1,4 @@
-import "@glint/ember-tsc/types";
+import '@glint/ember-tsc/types';
 
 // Context registry for ember-provide-consume-context
 declare module 'ember-provide-consume-context' {

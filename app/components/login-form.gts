@@ -39,7 +39,7 @@ export class LoginForm extends Component<LoginFormSignature> {
     try {
       await this.session.login({
         email: this.email,
-        password: this.password
+        password: this.password,
       });
 
       if (this.args.onSuccess) {
@@ -93,5 +93,5 @@ export class LoginForm extends Component<LoginFormSignature> {
         Submit
       </button>
     </form>
-  </template>;
+  </template>
 }

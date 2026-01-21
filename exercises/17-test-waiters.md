@@ -3,6 +3,7 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Learn how to use `@ember/test-waiters` to ensure tests properly wait for async operations to complete, preventing flaky tests and race conditions.
 
 ## The Problem
@@ -135,7 +136,7 @@ export class AsyncButton extends Component {
       await waitForPromise(this.args.onClick());
       this.state = 'success';
       // Reset to idle after showing success
-      await waitForPromise(new Promise(r => setTimeout(r, 1500)));
+      await waitForPromise(new Promise((r) => setTimeout(r, 1500)));
       this.state = 'idle';
     } catch {
       this.state = 'error';
@@ -184,9 +185,9 @@ export class DebouncedSearch {
 ```handlebars
 <AsyncButton
   @onClick={{this.saveData}}
-  @label="Save"
-  @loadingLabel="Saving..."
-  @successLabel="Saved!"
+  @label='Save'
+  @loadingLabel='Saving...'
+  @successLabel='Saved!'
 />
 ```
 
@@ -207,6 +208,7 @@ test('button shows loading then success', async function(assert) {
 ## Tests to Pass
 
 Run `npm test` and ensure all tests in:
+
 - `Integration | Component | async-button`
 - `Unit | Utility | debounced-search`
 

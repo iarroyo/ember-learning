@@ -12,14 +12,10 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'John',
       lastName: 'Smith',
       email: 'john@example.com',
-      isOnline: false
+      isOnline: false,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{user}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{user}} /></template>);
 
     assert.dom('[data-test-full-name]').hasText('John Smith');
   });
@@ -29,14 +25,10 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'Jane',
       lastName: 'Doe',
       email: 'jane@example.com',
-      isOnline: true
+      isOnline: true,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{user}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{user}} /></template>);
 
     assert.dom('[data-test-email]').hasText('jane@example.com');
   });
@@ -47,17 +39,15 @@ module('Integration | Component | user-card', function (hooks) {
       lastName: 'Doe',
       email: 'jane@example.com',
       avatar: 'https://example.com/avatar.jpg',
-      isOnline: true
+      isOnline: true,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{user}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{user}} /></template>);
 
     assert.dom('[data-test-avatar]').exists();
-    assert.dom('[data-test-avatar]').hasAttribute('src', 'https://example.com/avatar.jpg');
+    assert
+      .dom('[data-test-avatar]')
+      .hasAttribute('src', 'https://example.com/avatar.jpg');
     assert.dom('[data-test-initials]').doesNotExist();
   });
 
@@ -66,14 +56,10 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'Jane',
       lastName: 'Doe',
       email: 'jane@example.com',
-      isOnline: true
+      isOnline: true,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{user}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{user}} /></template>);
 
     assert.dom('[data-test-initials]').exists();
     assert.dom('[data-test-initials]').hasText('JD');
@@ -85,14 +71,10 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'Jane',
       lastName: 'Doe',
       email: 'jane@example.com',
-      isOnline: true
+      isOnline: true,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{onlineUser}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{onlineUser}} /></template>);
 
     assert.dom('[data-test-status]').hasClass('online');
     assert.dom('[data-test-status]').hasText('Online');
@@ -103,14 +85,10 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'John',
       lastName: 'Smith',
       email: 'john@example.com',
-      isOnline: false
+      isOnline: false,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{offlineUser}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{offlineUser}} /></template>);
 
     assert.dom('[data-test-status]').hasClass('offline');
     assert.dom('[data-test-status]').hasText('Offline');
@@ -122,14 +100,10 @@ module('Integration | Component | user-card', function (hooks) {
       lastName: 'Doe',
       email: 'jane@example.com',
       isOnline: true,
-      isPremium: true
+      isPremium: true,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{premiumUser}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{premiumUser}} /></template>);
 
     assert.dom('[data-test-premium-badge]').exists();
   });
@@ -140,14 +114,10 @@ module('Integration | Component | user-card', function (hooks) {
       lastName: 'Smith',
       email: 'john@example.com',
       isOnline: true,
-      isPremium: false
+      isPremium: false,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{regularUser}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{regularUser}} /></template>);
 
     assert.dom('[data-test-premium-badge]').doesNotExist();
   });
@@ -159,11 +129,15 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'Jane',
       lastName: 'Doe',
       email: 'jane@example.com',
-      isOnline: true
+      isOnline: true,
     };
 
     const handleContact = (contactedUser: User): void => {
-      assert.strictEqual(contactedUser, user, 'onContact called with user object');
+      assert.strictEqual(
+        contactedUser,
+        user,
+        'onContact called with user object'
+      );
     };
 
     await render(
@@ -181,14 +155,10 @@ module('Integration | Component | user-card', function (hooks) {
       firstName: 'Jane',
       lastName: 'Doe',
       email: 'jane@example.com',
-      isOnline: true
+      isOnline: true,
     };
 
-    await render(
-      <template>
-        <UserCard @user={{user}} />
-      </template>
-    );
+    await render(<template><UserCard @user={{user}} /></template>);
 
     assert.dom('[data-test-contact-button]').isDisabled();
   });

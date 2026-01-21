@@ -95,7 +95,10 @@ module('Integration | Component | alert', function (hooks) {
 
     await render(
       <template>
-        <Alert @dismissible={{true}} @onDismiss={{handleDismiss}}>Message</Alert>
+        <Alert
+          @dismissible={{true}}
+          @onDismiss={{handleDismiss}}
+        >Message</Alert>
       </template>
     );
 

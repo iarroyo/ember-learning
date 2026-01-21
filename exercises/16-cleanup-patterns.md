@@ -3,11 +3,13 @@
 **Difficulty: Difficult**
 
 ## Objective
+
 Learn proper cleanup patterns in Ember to prevent memory leaks, including `registerDestructor`, modifier cleanup, and `isDestroying` checks for async operations.
 
 ## Why Cleanup Matters
 
 Memory leaks occur when:
+
 - Event listeners aren't removed
 - Timers/intervals aren't cleared
 - Async operations update destroyed components

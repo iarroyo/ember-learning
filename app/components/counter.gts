@@ -50,7 +50,10 @@ export class Counter extends Component<CounterSignature> {
       >
         −
       </Button>
-      <span data-test-count class="text-xl font-semibold tabular-nums w-10 text-center">{{this.count}}</span>
+      <span
+        data-test-count
+        class="text-xl font-semibold tabular-nums w-10 text-center"
+      >{{this.count}}</span>
       <Button
         @variant="outline"
         @size="icon-sm"
@@ -68,7 +71,5 @@ export class Counter extends Component<CounterSignature> {
         Reset
       </Button>
     </div>
-  </template>;
+  </template>
 }
-
-

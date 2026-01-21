@@ -3,6 +3,7 @@
 **Difficulty: Difficult**
 
 ## Objective
+
 Create a registration form with comprehensive validation, password strength indicator, and touched-state tracking.
 
 ## Requirements
@@ -50,18 +51,22 @@ interface RegistrationFormSignature {
 ## Validation Rules
 
 ### Username
+
 - Minimum 3 characters
 - Only alphanumeric characters and underscores
 
 ### Email
+
 - Must match email pattern: `^[^\s@]+@[^\s@]+\.[^\s@]+$`
 
 ### Password
+
 - Minimum 8 characters
 - Must contain at least one uppercase letter
 - Must contain at least one number
 
 ### Confirm Password
+
 - Must match password field
 
 ## Password Strength Logic

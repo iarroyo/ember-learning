@@ -6,12 +6,16 @@ module('Unit | Route | products/product', function (hooks) {
   setupTest(hooks);
 
   test('it exists', function (assert) {
-    const route = this.owner.lookup('route:products/product') as ProductsProductRoute;
+    const route = this.owner.lookup(
+      'route:products/product'
+    ) as ProductsProductRoute;
     assert.ok(route);
   });
 
   test('model hook returns product by id', async function (assert) {
-    const route = this.owner.lookup('route:products/product') as ProductsProductRoute;
+    const route = this.owner.lookup(
+      'route:products/product'
+    ) as ProductsProductRoute;
     const model = await route.model({ product_id: '2' });
 
     assert.strictEqual(model?.name, 'Mechanical Keyboard');
@@ -19,7 +23,9 @@ module('Unit | Route | products/product', function (hooks) {
   });
 
   test('model hook returns null for non-existent product', async function (assert) {
-    const route = this.owner.lookup('route:products/product') as ProductsProductRoute;
+    const route = this.owner.lookup(
+      'route:products/product'
+    ) as ProductsProductRoute;
     const model = await route.model({ product_id: 'non-existent' });
 
     assert.strictEqual(model, null);

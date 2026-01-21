@@ -3,17 +3,20 @@
 **Difficulty: Difficult**
 
 ## Objective
+
 Create a route structure with authentication guards that redirect unauthenticated users to login and handle post-login redirects.
 
 ## Requirements
 
 Create routes:
+
 - `app/routes/login.ts` - Login page route
 - `app/routes/dashboard.ts` - Protected dashboard route
 - `app/routes/products.ts` - Products list route
 - `app/routes/products/product.ts` - Individual product route
 
 Create templates:
+
 - `app/templates/login.gts`
 - `app/templates/dashboard.gts`
 - `app/templates/products.gts`
@@ -88,18 +91,22 @@ if (this.session.attemptedTransition) {
 ## Template Requirements
 
 ### Login Template
+
 - Renders `<LoginForm>` component
 - Passes `@onSuccess` to handle redirect
 
 ### Dashboard Template
+
 - Shows welcome message with user's name
 - Has logout button
 
 ### Products Template
+
 - Lists products
 - Uses `{{outlet}}` for nested routes
 
 ### Product Template
+
 - Shows individual product details
 
 ## Tests to Pass

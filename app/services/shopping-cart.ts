@@ -18,7 +18,10 @@ export default class ShoppingCartService extends Service {
 
   @cached
   get subtotal(): number {
-    return this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    return this.items.reduce(
+      (sum, item) => sum + item.price * item.quantity,
+      0
+    );
   }
 
   get isEmpty(): boolean {
@@ -26,29 +29,32 @@ export default class ShoppingCartService extends Service {
   }
 
   addItem(product: { id: string; name: string; price: number }): void {
-    const existingItem = this.items.find(item => item.id === product.id);
-    
+    const existingItem = this.items.find((item) => item.id === product.id);
+
     if (existingItem) {
       existingItem.quantity++;
     } else {
-      this.items = [...this.items, {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: 1
-      }];
+      this.items = [
+        ...this.items,
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          quantity: 1,
+        },
+      ];
     }
   }
 
   removeItem(id: string): void {
-    this.items = this.items.filter(item => item.id !== id);
+    this.items = this.items.filter((item) => item.id !== id);
   }
 
   updateQuantity(id: string, quantity: number): void {
     if (quantity <= 0) {
       this.removeItem(id);
     } else {
-      const item = this.items.find(item => item.id === id);
+      const item = this.items.find((item) => item.id === id);
       if (item) {
         item.quantity = quantity;
         this.items = [...this.items]; // Trigger reactivity

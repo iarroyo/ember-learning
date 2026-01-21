@@ -72,5 +72,5 @@ export class UserCard extends Component<UserCardSignature> {
         Contact
       </button>
     </div>
-  </template>;
+  </template>
 }

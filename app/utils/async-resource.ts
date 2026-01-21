@@ -8,9 +8,7 @@ export class AsyncResource<T = unknown> {
   @tracked error: Error | null = null;
   private abortController: AbortController | null = null;
 
-  constructor(
-    private fetchFn: (signal?: AbortSignal) => Promise<T>
-  ) {}
+  constructor(private fetchFn: (signal?: AbortSignal) => Promise<T>) {}
 
   async load(): Promise<void> {
     this.isLoading = true;

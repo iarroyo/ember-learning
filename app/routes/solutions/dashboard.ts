@@ -7,21 +7,20 @@ export class DashboardRoute extends Route {
   @service declare session: SessionService;
   @service declare router: RouterService;
 
-  async beforeModel(): Promise<void> {
-    await this.session.restoreSession();
+  beforeModel(): void {
+    this.session.restoreSession();
     if (!this.session.isAuthenticated) {
       this.router.transitionTo('login');
     }
   }
 
   model(): { userName: string; handleLogout: () => void } {
-    const route = this;
     return {
       userName: this.session.currentUser?.name || 'User',
       handleLogout: () => {
-        route.session.logout();
-        route.router.transitionTo('login');
-      }
+        this.session.logout();
+        this.router.transitionTo('login');
+      },
     };
   }
 }

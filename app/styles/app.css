@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import "tw-animate-css";
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -79,39 +79,51 @@
 .dark {
   /* Background: dark base - ~#0f0f0f */
   --background: oklch(0.11 0 0);
+
   /* Foreground: pure white for maximum contrast - #ffffff */
   --foreground: oklch(1 0 0);
+
   /* Card: noticeably lighter than background - ~#262626 for clear separation */
   --card: oklch(0.24 0 0);
   --card-foreground: oklch(1 0 0);
   --popover: oklch(0.24 0 0);
   --popover-foreground: oklch(1 0 0);
+
   /* Primary: bright for good visibility */
   --primary: oklch(0.95 0 0);
   --primary-foreground: oklch(0.12 0 0);
+
   /* Secondary: more visible against dark background */
   --secondary: oklch(0.25 0 0);
   --secondary-foreground: oklch(0.95 0 0);
+
   /* Muted: increased lightness for 4.5:1 contrast ratio */
   --muted: oklch(0.25 0 0);
   --muted-foreground: oklch(0.75 0 0);
+
   /* Accent */
   --accent: oklch(0.25 0 0);
   --accent-foreground: oklch(0.95 0 0);
+
   /* Destructive: brighter red for visibility */
   --destructive: oklch(0.65 0.22 25);
+
   /* Border: more visible - ~18% opacity */
   --border: oklch(1 0 0 / 18%);
+
   /* Input: more visible borders */
   --input: oklch(1 0 0 / 20%);
+
   /* Ring: brighter for focus visibility */
   --ring: oklch(0.65 0 0);
+
   /* Charts: increased brightness for visibility */
   --chart-1: oklch(0.55 0.24 264);
   --chart-2: oklch(0.72 0.17 162);
   --chart-3: oklch(0.8 0.19 70);
   --chart-4: oklch(0.68 0.26 304);
   --chart-5: oklch(0.7 0.25 16);
+
   /* Sidebar */
   --sidebar: oklch(0.18 0 0);
   --sidebar-foreground: oklch(1 0 0);
@@ -127,6 +139,7 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }

@@ -174,7 +174,11 @@ module('Integration | Component | modal', function (hooks) {
         <Modal as |modal|>
           <modal.Trigger data-test-trigger>Open</modal.Trigger>
           <modal.Body>
-            <button data-test-custom-close type="button" {{on "click" modal.close}}>
+            <button
+              data-test-custom-close
+              type="button"
+              {{on "click" modal.close}}
+            >
               Custom Close
             </button>
           </modal.Body>
@@ -236,10 +240,7 @@ module('Integration | Component | modal', function (hooks) {
     const modal = document.querySelector('[data-test-modal]');
     const activeElement = document.activeElement;
 
-    assert.true(
-      modal?.contains(activeElement),
-      'Focus is within modal'
-    );
+    assert.true(modal?.contains(activeElement), 'Focus is within modal');
   });
 
   test('returns focus to trigger when closed', async function (assert) {

@@ -70,7 +70,7 @@ export default class GlobalSearchService extends Service {
 
   // Cancel all running searches - affects ALL consumers of this service
   cancelAllSearches(): void {
-    this.searchTask.cancelAll();
+    void this.searchTask.cancelAll();
   }
 
   clearHistory(): void {

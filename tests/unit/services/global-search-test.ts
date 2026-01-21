@@ -7,12 +7,16 @@ module('Unit | Service | global-search', function (hooks) {
   setupTest(hooks);
 
   test('it exists', function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
     assert.ok(service);
   });
 
   test('searchTask performs search and returns results', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     await service.searchTask.perform('test query');
 
@@ -21,7 +25,9 @@ module('Unit | Service | global-search', function (hooks) {
   });
 
   test('results getter returns lastSuccessful value', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     // Initially empty
     assert.deepEqual(service.results, []);
@@ -33,7 +39,9 @@ module('Unit | Service | global-search', function (hooks) {
   });
 
   test('isSearching reflects task running state', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     assert.false(service.isSearching);
 
@@ -50,7 +58,9 @@ module('Unit | Service | global-search', function (hooks) {
   });
 
   test('searchHistory tracks all searches', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     assert.strictEqual(service.searchHistory.length, 0);
 
@@ -65,7 +75,9 @@ module('Unit | Service | global-search', function (hooks) {
   });
 
   test('lastQuery returns the most recent search query', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     assert.strictEqual(service.lastQuery, undefined);
 
@@ -76,11 +88,13 @@ module('Unit | Service | global-search', function (hooks) {
     assert.strictEqual(service.lastQuery, 'second');
   });
 
-  test('cancelAllSearches cancels running task', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+  test('cancelAllSearches cancels running task', function (assert) {
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     // Start search but don't await
-    service.searchTask.perform('query');
+    void service.searchTask.perform('query');
 
     assert.true(service.isSearching);
 
@@ -90,7 +104,9 @@ module('Unit | Service | global-search', function (hooks) {
   });
 
   test('clearHistory removes all history entries', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     await service.searchTask.perform('query1');
     await service.searchTask.perform('query2');
@@ -103,7 +119,9 @@ module('Unit | Service | global-search', function (hooks) {
   });
 
   test('restartable modifier cancels previous search when new one starts', async function (assert) {
-    const service = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const service = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     // Start first search
     const task1 = service.searchTask.perform('first');

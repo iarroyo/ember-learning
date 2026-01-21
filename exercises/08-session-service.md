@@ -3,6 +3,7 @@
 **Difficulty: Difficult**
 
 ## Objective
+
 Create a session service to manage user authentication state across the application.
 
 ## Requirements
@@ -39,15 +40,18 @@ export default class SessionService extends Service {
 ## Behavior Details
 
 ### login(credentials)
+
 - Validates credentials (mock: email="user@example.com", password="password123")
 - On success: Set token, user, isAuthenticated; store token in localStorage
 - On failure: Throw an error with message
 
 ### logout()
+
 - Clear all auth state
 - Remove token from localStorage
 
 ### restoreSession()
+
 - Check localStorage for existing token
 - Decode token to restore user info
 - Handle invalid tokens gracefully

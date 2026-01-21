@@ -42,11 +42,17 @@ class Tabs extends Component<TabsSignature> {
   };
 
   <template>
-    <div class={{cn "flex flex-col gap-2" @class}} data-slot="tabs" ...attributes>
+    <div
+      class={{cn "flex flex-col gap-2" @class}}
+      data-slot="tabs"
+      ...attributes
+    >
       {{yield
         (hash
           List=TabsList
-          Trigger=(component TabsTrigger currentValue=this.value setValue=this.setValue)
+          Trigger=(component
+            TabsTrigger currentValue=this.value setValue=this.setValue
+          )
           Content=(component TabsContent currentValue=this.value)
           value=this.value
           setValue=this.setValue

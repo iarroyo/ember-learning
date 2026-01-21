@@ -3,6 +3,7 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Create a login form component that handles user authentication through a session service.
 
 ## Requirements

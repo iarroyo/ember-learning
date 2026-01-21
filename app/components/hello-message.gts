@@ -11,10 +11,8 @@ const getDisplayName = (name?: string): string => {
   return name || 'World';
 };
 
-const HelloMessage = <TOC<HelloMessageSignature>>(
-  <template>
-    <p class="greeting">Hello, {{getDisplayName @name}}!</p>
-  </template>
-);
+const HelloMessage = <TOC<HelloMessageSignature>><template>
+  <p class="greeting">Hello, {{getDisplayName @name}}!</p>
+</template>;
 
 export { HelloMessage };

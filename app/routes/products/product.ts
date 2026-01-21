@@ -14,7 +14,7 @@ const mockProducts: Record<string, Product> = {
 };
 
 export default class ProductsProductRoute extends Route {
-  async model(params: { product_id: string }): Promise<Product | null> {
+  model(params: { product_id: string }): Product | null {
     return mockProducts[params.product_id] || null;
   }
 }

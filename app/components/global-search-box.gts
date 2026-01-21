@@ -37,7 +37,7 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
   @action
   handleInput(event: Event): void {
     const query = (event.target as HTMLInputElement).value;
-    this.globalSearch.searchTask.perform(query);
+    void this.globalSearch.searchTask.perform(query);
   }
 
   @action
@@ -82,14 +82,17 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
       {{#if this.hasResults}}
         <div class="mt-2">
           <div data-test-search-results-count class="text-sm text-gray-500">
-            {{this.results.length}} results
+            {{this.results.length}}
+            results
           </div>
           <ul class="mt-1 space-y-1">
             {{#each this.results as |result|}}
               <li data-test-search-result class="p-2 bg-gray-50 rounded">
                 <div class="font-medium">{{result.title}}</div>
                 {{#if result.description}}
-                  <div class="text-sm text-gray-500">{{result.description}}</div>
+                  <div
+                    class="text-sm text-gray-500"
+                  >{{result.description}}</div>
                 {{/if}}
               </li>
             {{/each}}
@@ -100,7 +103,10 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
       {{#if this.searchHistory.length}}
         <div class="mt-4 pt-4 border-t">
           <div class="flex justify-between items-center">
-            <span data-test-history-label class="text-sm font-medium text-gray-700">
+            <span
+              data-test-history-label
+              class="text-sm font-medium text-gray-700"
+            >
               Search History ({{this.searchHistory.length}})
             </span>
             <button
@@ -115,7 +121,9 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
           <ul class="mt-1 space-y-1">
             {{#each this.searchHistory as |entry|}}
               <li data-test-history-entry class="text-sm text-gray-600">
-                "{{entry.query}}" - {{entry.resultCount}} results
+                "{{entry.query}}" -
+                {{entry.resultCount}}
+                results
               </li>
             {{/each}}
           </ul>

@@ -3,6 +3,7 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Create a service to manage shopping cart state across the application.
 
 ## Requirements
@@ -45,7 +46,7 @@ export default class ShoppingCartService extends Service {
 - `addItem`: If the item already exists, increment its quantity; otherwise add with quantity 1
 - `updateQuantity`: If quantity is 0 or less, remove the item
 - `itemCount`: Total number of items (sum of all quantities)
-- `subtotal`: Sum of (price * quantity) for all items
+- `subtotal`: Sum of (price \* quantity) for all items
 
 ## Usage Example
 

@@ -7,11 +7,7 @@ module('Integration | Component | registration-form', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it renders all form fields', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     assert.dom('[data-test-username-input]').exists();
     assert.dom('[data-test-email-input]').exists();
@@ -21,36 +17,26 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('submit button is disabled initially', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     assert.dom('[data-test-submit-button]').isDisabled();
   });
 
   // Username validation tests
   test('shows error for username less than 3 characters', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-username-input]', 'ab');
     await blur('[data-test-username-input]');
 
     assert.dom('[data-test-username-error]').exists();
-    assert.dom('[data-test-username-error]').containsText('at least 3 characters');
+    assert
+      .dom('[data-test-username-error]')
+      .containsText('at least 3 characters');
   });
 
   test('shows error for username with invalid characters', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-username-input]', 'user@name!');
     await blur('[data-test-username-input]');
@@ -60,11 +46,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('no error for valid username', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-username-input]', 'valid_user123');
     await blur('[data-test-username-input]');
@@ -74,11 +56,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
   // Email validation tests
   test('shows error for invalid email format', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-email-input]', 'invalid-email');
     await blur('[data-test-email-input]');
@@ -88,11 +66,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('no error for valid email', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-email-input]', 'user@example.com');
     await blur('[data-test-email-input]');
@@ -102,11 +76,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
   // Password validation tests
   test('shows error for password less than 8 characters', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'Short1');
     await blur('[data-test-password-input]');
@@ -116,11 +86,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('shows error for password without uppercase', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'lowercase123');
     await blur('[data-test-password-input]');
@@ -130,11 +96,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('shows error for password without number', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'NoNumbersHere');
     await blur('[data-test-password-input]');
@@ -144,11 +106,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('no error for valid password', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'ValidPass123');
     await blur('[data-test-password-input]');
@@ -158,11 +116,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
   // Password confirmation tests
   test('shows error when passwords do not match', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'ValidPass123');
     await fillIn('[data-test-confirm-password-input]', 'DifferentPass123');
@@ -173,11 +127,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('no error when passwords match', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'ValidPass123');
     await fillIn('[data-test-confirm-password-input]', 'ValidPass123');
@@ -188,11 +138,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
   // Password strength indicator
   test('shows weak password strength', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'Weak1234');
 
@@ -200,11 +146,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('shows medium password strength', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'Medium1Pass');
 
@@ -212,11 +154,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('shows strong password strength', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-password-input]', 'Str0ng!Pass#2024');
 
@@ -225,11 +163,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
   // Form submission
   test('enables submit button when all fields are valid', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-username-input]', 'valid_user');
     await blur('[data-test-username-input]');
@@ -246,16 +180,18 @@ module('Integration | Component | registration-form', function (hooks) {
   test('calls onSubmit with form data when submitted', async function (assert) {
     assert.expect(4);
 
-    const handleSubmit = (data: { username: string; email: string; password: string }) => {
+    const handleSubmit = (data: {
+      username: string;
+      email: string;
+      password: string;
+    }) => {
       assert.strictEqual(data.username, 'valid_user');
       assert.strictEqual(data.email, 'user@example.com');
       assert.strictEqual(data.password, 'ValidPass123');
     };
 
     await render(
-      <template>
-        <RegistrationForm @onSubmit={{handleSubmit}} />
-      </template>
+      <template><RegistrationForm @onSubmit={{handleSubmit}} /></template>
     );
 
     await fillIn('[data-test-username-input]', 'valid_user');
@@ -273,11 +209,7 @@ module('Integration | Component | registration-form', function (hooks) {
   });
 
   test('clear button resets the form', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-username-input]', 'some_user');
     await fillIn('[data-test-email-input]', 'test@example.com');
@@ -290,11 +222,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
   // Errors only show after blur
   test('errors do not show before field is blurred', async function (assert) {
-    await render(
-      <template>
-        <RegistrationForm />
-      </template>
-    );
+    await render(<template><RegistrationForm /></template>);
 
     await fillIn('[data-test-username-input]', 'ab');
 

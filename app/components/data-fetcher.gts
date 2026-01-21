@@ -10,30 +10,34 @@ interface DataFetcherSignature<T = unknown> {
     refreshInterval?: number;
   };
   Blocks: {
-    default: [{
-      isLoading: boolean;
-      isSuccess: boolean;
-      isError: boolean;
-      isEmpty: boolean;
-      data: T | null;
-      error: Error | null;
-      retry: () => void;
-    }];
+    default: [
+      {
+        isLoading: boolean;
+        isSuccess: boolean;
+        isError: boolean;
+        isEmpty: boolean;
+        data: T | null;
+        error: Error | null;
+        retry: () => void;
+      },
+    ];
   };
   Element: HTMLDivElement;
 }
 
-export class DataFetcher<T = unknown> extends Component<DataFetcherSignature<T>> {
+export class DataFetcher<T = unknown> extends Component<
+  DataFetcherSignature<T>
+> {
   @tracked resource = new AsyncResource(this.args.fetch);
   private refreshIntervalId: number | null = null;
 
   constructor(owner: Owner, args: DataFetcherSignature<T>['Args']) {
     super(owner, args);
-    this.resource.load();
+    void this.resource.load();
 
     if (args.refreshInterval) {
       this.refreshIntervalId = window.setInterval(() => {
-        this.resource.load();
+        void this.resource.load();
       }, args.refreshInterval);
     }
   }
@@ -47,7 +51,7 @@ export class DataFetcher<T = unknown> extends Component<DataFetcherSignature<T>>
 
   @action
   retry(): void {
-    this.resource.retry();
+    void this.resource.retry();
   }
 
   get yieldHash() {
@@ -58,11 +62,9 @@ export class DataFetcher<T = unknown> extends Component<DataFetcherSignature<T>>
       isEmpty: this.resource.isEmpty,
       data: this.resource.data,
       error: this.resource.error,
-      retry: this.retry,
+      retry: this.retry.bind(this),
     };
   }
 
-  <template>
-    {{yield this.yieldHash}}
-  </template>;
+  <template>{{yield this.yieldHash}}</template>
 }

@@ -3,6 +3,7 @@
 **Difficulty: Low**
 
 ## Objective
+
 Create a component that displays a summary of the shopping cart by consuming the shopping cart service.
 
 ## Requirements

@@ -42,5 +42,5 @@ export class CartSummary extends Component<CartSummarySignature> {
         Clear Cart
       </button>
     </div>
-  </template>;
+  </template>
 }

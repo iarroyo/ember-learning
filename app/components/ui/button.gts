@@ -68,21 +68,23 @@ class Button extends Component<ButtonSignature> {
     );
   }
 
-  <template>{{#if @asChild}}
-  {{yield (hash classes=this.classes)}}
-  {{else}}
-  <button
-  class={{this.classes}}
-  data-size={{if @size @size "default"}}
-  data-slot="button"
-  data-variant={{if @variant @variant "default"}}
-  disabled={{@disabled}}
-  type={{if @type @type "button"}}
-  ...attributes
-  >
-  {{yield}}
-  </button>
-  {{/if}}</template>
+  <template>
+    {{#if @asChild}}
+      {{yield (hash classes=this.classes)}}
+    {{else}}
+      <button
+        class={{this.classes}}
+        data-size={{if @size @size "default"}}
+        data-slot="button"
+        data-variant={{if @variant @variant "default"}}
+        disabled={{@disabled}}
+        type={{if @type @type "button"}}
+        ...attributes
+      >
+        {{yield}}
+      </button>
+    {{/if}}
+  </template>
 }
 
 export { Button, buttonVariants };

@@ -43,13 +43,15 @@ class Badge extends Component<BadgeSignature> {
     return badgeVariants(this.args.variant ?? 'default', this.args.class);
   }
 
-  <template>{{#if @asChild}}
-  {{yield (hash classes=this.classes)}}
-  {{else}}
-  <span class={{this.classes}} data-slot="badge" ...attributes>
-  {{yield}}
-  </span>
-  {{/if}}</template>
+  <template>
+    {{#if @asChild}}
+      {{yield (hash classes=this.classes)}}
+    {{else}}
+      <span class={{this.classes}} data-slot="badge" ...attributes>
+        {{yield}}
+      </span>
+    {{/if}}
+  </template>
 }
 
 export { Badge, badgeVariants };

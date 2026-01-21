@@ -3,6 +3,7 @@
 **Difficulty: Difficult**
 
 ## Objective
+
 Create a reusable utility class for managing async data fetching with loading, error, and success states.
 
 ## Requirements
@@ -39,6 +40,7 @@ export class AsyncResource<T = unknown> {
 ## Behavior Details
 
 ### load()
+
 1. Set loading state, clear errors
 2. Create new AbortController
 3. Execute fetch function with signal
@@ -47,16 +49,20 @@ export class AsyncResource<T = unknown> {
 6. Always clear loading state in finally
 
 ### retry()
+
 - Simply calls `load()` again
 
 ### cancel()
+
 - Aborts the current request via AbortController
 
 ### reset()
+
 - Clears all state to initial values
 - Cancels any pending request
 
 ### isEmpty
+
 - Returns true if data is an array with length 0
 
 ## Usage Example

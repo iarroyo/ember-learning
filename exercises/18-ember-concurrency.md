@@ -5,11 +5,13 @@
 **Prerequisites:** Exercise 11 (Async Resource)
 
 ## Objective
+
 Learn how to use `ember-concurrency` for managing async operations with automatic cancellation, loading states, and the `lastSuccessful` pattern for showing stale data while revalidating.
 
 ## Why Ember Concurrency?
 
 While `AsyncResource` (Exercise 11) works well, `ember-concurrency` provides:
+
 - Automatic cancellation when component is destroyed
 - Built-in `isRunning`, `lastSuccessful`, `lastComplete` states
 - Task modifiers like `drop`, `restartable`, `enqueue`
@@ -45,7 +47,7 @@ Show stale data while loading new data:
   <LoadingSpinner />
 {{/if}}
 
-{{!-- lastSuccessful keeps showing old results while new search runs --}}
+{{! lastSuccessful keeps showing old results while new search runs }}
 {{#each this.searchTask.lastSuccessful.value as |result|}}
   <ResultItem @result={{result}} />
 {{/each}}
@@ -58,7 +60,9 @@ Show stale data while loading new data:
 ```typescript
 // Component A
 class SearchBoxA extends Component {
-  searchTask = task(async (q) => { /* ... */ });
+  searchTask = task(async (q) => {
+    /* ... */
+  });
 
   @action cancel() {
     this.searchTask.cancelAll(); // Only cancels THIS component's task
@@ -67,7 +71,9 @@ class SearchBoxA extends Component {
 
 // Component B - has its own independent searchTask
 class SearchBoxB extends Component {
-  searchTask = task(async (q) => { /* ... */ });
+  searchTask = task(async (q) => {
+    /* ... */
+  });
   // Cancelling in A does NOT affect B's task!
 }
 ```
@@ -155,30 +161,31 @@ interface GlobalSearchBoxSignature {
 
 ## Task Modifiers
 
-| Modifier | Behavior |
-|----------|----------|
-| `restartable` | Cancels previous task when new one starts |
-| `drop` | Ignores new performs while running |
-| `enqueue` | Queues new performs to run after current |
-| `keepLatest` | Like drop, but keeps the last dropped to run after |
+| Modifier      | Behavior                                           |
+| ------------- | -------------------------------------------------- |
+| `restartable` | Cancels previous task when new one starts          |
+| `drop`        | Ignores new performs while running                 |
+| `enqueue`     | Queues new performs to run after current           |
+| `keepLatest`  | Like drop, but keeps the last dropped to run after |
 
 ## Usage Example
 
 ```handlebars
-{{!-- Two independent search boxes --}}
-<SearchBox @placeholder="Search products..." />
-<SearchBox @placeholder="Search users..." />
-{{!-- Cancelling one doesn't affect the other --}}
+{{! Two independent search boxes }}
+<SearchBox @placeholder='Search products...' />
+<SearchBox @placeholder='Search users...' />
+{{! Cancelling one doesn't affect the other }}
 
-{{!-- Two boxes sharing the same task via service --}}
-<GlobalSearchBox @placeholder="Global search 1" />
-<GlobalSearchBox @placeholder="Global search 2" />
-{{!-- Cancelling one cancels both! --}}
+{{! Two boxes sharing the same task via service }}
+<GlobalSearchBox @placeholder='Global search 1' />
+<GlobalSearchBox @placeholder='Global search 2' />
+{{! Cancelling one cancels both! }}
 ```
 
 ## Tests to Pass
 
 Run `npm test` and ensure all tests in:
+
 - `Integration | Component | search-box`
 - `Integration | Component | global-search-box`
 - `Unit | Service | global-search`

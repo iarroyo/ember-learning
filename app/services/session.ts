@@ -20,16 +20,19 @@ export default class SessionService extends Service {
 
   async login(credentials: { email: string; password: string }): Promise<void> {
     // Mock login - in real app this would call an API
-    if (credentials.email === 'user@example.com' && credentials.password === 'password123') {
+    if (
+      credentials.email === 'user@example.com' &&
+      credentials.password === 'password123'
+    ) {
       // Simulate network latency for testing loading states
       // Use waitForPromise so test helpers wait for this to complete
-      await waitForPromise(new Promise(resolve => setTimeout(resolve, 50)));
+      await waitForPromise(new Promise((resolve) => setTimeout(resolve, 50)));
 
       const token = btoa(`${credentials.email}:${Date.now()}`);
       this.token = token;
       this.currentUser = {
         email: credentials.email,
-        name: 'John Doe'
+        name: 'John Doe',
       };
       this.isAuthenticated = true;
       localStorage.setItem('auth-token', token);
@@ -45,7 +48,7 @@ export default class SessionService extends Service {
     localStorage.removeItem('auth-token');
   }
 
-  async restoreSession(): Promise<void> {
+  restoreSession(): void {
     const token = localStorage.getItem('auth-token');
     if (!token) {
       return;
@@ -55,12 +58,12 @@ export default class SessionService extends Service {
       // Decode token to get email
       const decoded = atob(token);
       const [email] = decoded.split(':');
-      
+
       if (email) {
         this.token = token;
         this.currentUser = {
           email,
-          name: 'John Doe'
+          name: 'John Doe',
         };
         this.isAuthenticated = true;
       } else {

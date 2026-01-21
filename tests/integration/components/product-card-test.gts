@@ -12,14 +12,10 @@ module('Integration | Component | product-card', function (hooks) {
       id: '1',
       name: 'Test Product',
       price: 99.99,
-      image: '/test.jpg'
+      image: '/test.jpg',
     };
 
-    await render(
-      <template>
-        <ProductCard @product={{product}} />
-      </template>
-    );
+    await render(<template><ProductCard @product={{product}} /></template>);
 
     assert.dom('[data-test-product-name]').hasText('Test Product');
     assert.dom('[data-test-product-price]').hasText('$99.99');
@@ -30,31 +26,25 @@ module('Integration | Component | product-card', function (hooks) {
     const product = {
       id: '42',
       name: 'Test Product',
-      price: 99.99
+      price: 99.99,
     };
 
-    await render(
-      <template>
-        <ProductCard @product={{product}} />
-      </template>
-    );
+    await render(<template><ProductCard @product={{product}} /></template>);
 
     assert.dom('[data-test-product-link]').hasAttribute('href', '/products/42');
   });
 
   test('add to cart button calls shopping cart service', async function (assert) {
-    const shoppingCart = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const shoppingCart = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
     const product = {
       id: '1',
       name: 'Test Product',
-      price: 99.99
+      price: 99.99,
     };
 
-    await render(
-      <template>
-        <ProductCard @product={{product}} />
-      </template>
-    );
+    await render(<template><ProductCard @product={{product}} /></template>);
 
     assert.strictEqual(shoppingCart.itemCount, 0);
 

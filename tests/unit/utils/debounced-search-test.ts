@@ -14,6 +14,7 @@ module('Unit | Utility | debounced-search', function (hooks) {
       'hello',
       async (query) => {
         searchedQuery = query;
+        await Promise.resolve();
       },
       50
     );
@@ -34,6 +35,7 @@ module('Unit | Utility | debounced-search', function (hooks) {
       'first',
       async (query) => {
         calls.push(query);
+        await Promise.resolve();
       },
       50
     );
@@ -43,6 +45,7 @@ module('Unit | Utility | debounced-search', function (hooks) {
       'second',
       async (query) => {
         calls.push(query);
+        await Promise.resolve();
       },
       50
     );
@@ -60,6 +63,7 @@ module('Unit | Utility | debounced-search', function (hooks) {
       'query',
       async () => {
         called = true;
+        await Promise.resolve();
       },
       50
     );
@@ -80,7 +84,13 @@ module('Unit | Utility | debounced-search', function (hooks) {
 
     assert.false(search.isPending, 'initially not pending');
 
-    search.search('query', async () => {}, 50);
+    search.search(
+      'query',
+      async () => {
+        await Promise.resolve();
+      },
+      50
+    );
 
     assert.true(search.isPending, 'pending after search called');
 
@@ -98,6 +108,7 @@ module('Unit | Utility | debounced-search', function (hooks) {
         `query${i}`,
         async (query) => {
           calls.push(query);
+          await Promise.resolve();
         },
         50
       );
@@ -125,6 +136,9 @@ module('Unit | Utility | debounced-search', function (hooks) {
     // settled() will wait for both the debounce timeout AND the async callback
     await settled();
 
-    assert.true(asyncCompleted, 'async callback completed before settled() returned');
+    assert.true(
+      asyncCompleted,
+      'async callback completed before settled() returned'
+    );
   });
 });

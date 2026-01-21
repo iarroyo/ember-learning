@@ -9,11 +9,7 @@ module('Integration | Component | profile-editor', function (hooks) {
 
   module('object mode (anti-pattern)', function () {
     test('it renders in object mode', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       assert.dom('[data-test-profile-editor]').exists();
       assert.dom('[data-test-mode="object"]').exists();
@@ -24,11 +20,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('it updates firstName correctly', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       await fillIn('[data-test-first-name]', 'John');
       assert.dom('[data-test-first-name]').hasValue('John');
@@ -36,11 +28,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('it updates lastName correctly', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       await fillIn('[data-test-last-name]', 'Doe');
       assert.dom('[data-test-last-name]').hasValue('Doe');
@@ -48,11 +36,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('fullName combines firstName and lastName', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       await fillIn('[data-test-first-name]', 'John');
       await fillIn('[data-test-last-name]', 'Doe');
@@ -60,11 +44,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('save button is disabled when invalid', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       assert.dom('[data-test-save-button]').isDisabled();
 
@@ -103,11 +83,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('reset clears all fields', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       await fillIn('[data-test-first-name]', 'John');
       await fillIn('[data-test-last-name]', 'Doe');
@@ -122,11 +98,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('render count increments on each field change', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="object" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="object" /></template>);
 
       const initialCount = parseInt(
         document.querySelector('[data-test-render-count]')?.textContent ?? '0'
@@ -158,11 +130,7 @@ module('Integration | Component | profile-editor', function (hooks) {
 
   module('granular mode (recommended)', function () {
     test('it renders in granular mode', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       assert.dom('[data-test-profile-editor]').exists();
       assert.dom('[data-test-mode="granular"]').exists();
@@ -173,11 +141,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('it updates firstName correctly', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       await fillIn('[data-test-first-name]', 'Jane');
       assert.dom('[data-test-first-name]').hasValue('Jane');
@@ -185,11 +149,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('it updates lastName correctly', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       await fillIn('[data-test-last-name]', 'Smith');
       assert.dom('[data-test-last-name]').hasValue('Smith');
@@ -197,11 +157,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('fullName combines firstName and lastName', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       await fillIn('[data-test-first-name]', 'Jane');
       await fillIn('[data-test-last-name]', 'Smith');
@@ -209,11 +165,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('save button is disabled when invalid', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       assert.dom('[data-test-save-button]').isDisabled();
 
@@ -252,11 +204,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('reset clears all fields', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       await fillIn('[data-test-first-name]', 'Jane');
       await fillIn('[data-test-last-name]', 'Smith');
@@ -271,11 +219,7 @@ module('Integration | Component | profile-editor', function (hooks) {
     });
 
     test('render count increments on field changes', async function (assert) {
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" />
-        </template>
-      );
+      await render(<template><ProfileEditor @mode="granular" /></template>);
 
       const initialCount = parseInt(
         document.querySelector('[data-test-render-count]')?.textContent ?? '0'
@@ -325,7 +269,10 @@ module('Integration | Component | profile-editor', function (hooks) {
 
       await fillIn('[data-test-granular] [data-test-first-name]', 'Test');
       await fillIn('[data-test-granular] [data-test-last-name]', 'User');
-      await fillIn('[data-test-granular] [data-test-email]', 'test@example.com');
+      await fillIn(
+        '[data-test-granular] [data-test-email]',
+        'test@example.com'
+      );
       await fillIn('[data-test-granular] [data-test-bio]', 'Bio text');
 
       // Save both
@@ -354,8 +301,12 @@ module('Integration | Component | profile-editor', function (hooks) {
       await fillIn('[data-test-granular] [data-test-first-name]', 'Alice');
       await fillIn('[data-test-granular] [data-test-last-name]', 'Wonder');
 
-      assert.dom('[data-test-object] [data-test-full-name]').hasText('Alice Wonder');
-      assert.dom('[data-test-granular] [data-test-full-name]').hasText('Alice Wonder');
+      assert
+        .dom('[data-test-object] [data-test-full-name]')
+        .hasText('Alice Wonder');
+      assert
+        .dom('[data-test-granular] [data-test-full-name]')
+        .hasText('Alice Wonder');
     });
   });
 });

@@ -14,19 +14,39 @@ interface UserListSignature {
 }
 
 const mockUsers: User[] = [
-  { firstName: 'John', lastName: 'Doe', email: 'john@example.com', isOnline: true },
-  { firstName: 'Jane', lastName: 'Smith', email: 'jane@example.com', isOnline: false },
-  { firstName: 'Bob', lastName: 'Johnson', email: 'bob@example.com', isOnline: true },
-  { firstName: 'Alice', lastName: 'Williams', email: 'alice@example.com', isOnline: true },
+  {
+    firstName: 'John',
+    lastName: 'Doe',
+    email: 'john@example.com',
+    isOnline: true,
+  },
+  {
+    firstName: 'Jane',
+    lastName: 'Smith',
+    email: 'jane@example.com',
+    isOnline: false,
+  },
+  {
+    firstName: 'Bob',
+    lastName: 'Johnson',
+    email: 'bob@example.com',
+    isOnline: true,
+  },
+  {
+    firstName: 'Alice',
+    lastName: 'Williams',
+    email: 'alice@example.com',
+    isOnline: true,
+  },
 ];
 
 async function fetchUsers(): Promise<User[]> {
-  await new Promise(resolve => setTimeout(resolve, 100));
-  
+  await new Promise((resolve) => setTimeout(resolve, 100));
+
   if (getMockFailure()) {
     throw new Error('Failed to fetch users');
   }
-  
+
   return mockUsers;
 }
 
@@ -35,12 +55,12 @@ export class UserList extends Component<UserListSignature> {
 
   constructor(owner: Owner, args: UserListSignature['Args']) {
     super(owner, args);
-    this.resource.load();
+    void this.resource.load();
   }
 
   @action
   retry(): void {
-    this.resource.retry();
+    void this.resource.retry();
   }
 
   <template>
@@ -48,7 +68,11 @@ export class UserList extends Component<UserListSignature> {
       <div data-test-skeleton>Loading...</div>
     {{else if this.resource.isError}}
       <div data-test-error>Error loading users</div>
-      <button data-test-retry-button type="button" {{on "click" this.retry}}>Retry</button>
+      <button
+        data-test-retry-button
+        type="button"
+        {{on "click" this.retry}}
+      >Retry</button>
     {{else if this.resource.isSuccess}}
       {{#each this.resource.data as |user|}}
         <div data-test-user-card>
@@ -57,5 +81,5 @@ export class UserList extends Component<UserListSignature> {
         </div>
       {{/each}}
     {{/if}}
-  </template>;
+  </template>
 }

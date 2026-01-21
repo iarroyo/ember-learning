@@ -6,7 +6,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   setupTest(hooks);
 
   test('it starts with an empty cart', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     assert.strictEqual(service.itemCount, 0);
     assert.strictEqual(service.subtotal, 0);
@@ -15,7 +17,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('addItem adds a new product to the cart', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
     const product = { id: '1', name: 'Widget', price: 9.99 };
 
     service.addItem(product);
@@ -27,7 +31,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('addItem increments quantity for existing product', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
     const product = { id: '1', name: 'Widget', price: 9.99 };
 
     service.addItem(product);
@@ -40,7 +46,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('addItem handles multiple different products', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     service.addItem({ id: '1', name: 'Widget', price: 9.99 });
     service.addItem({ id: '2', name: 'Gadget', price: 19.99 });
@@ -51,7 +59,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('removeItem removes product from cart', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     service.addItem({ id: '1', name: 'Widget', price: 9.99 });
     service.addItem({ id: '2', name: 'Gadget', price: 19.99 });
@@ -63,7 +73,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('updateQuantity changes item quantity', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     service.addItem({ id: '1', name: 'Widget', price: 9.99 });
     service.updateQuantity('1', 5);
@@ -73,7 +85,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('updateQuantity removes item when quantity is 0 or less', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     service.addItem({ id: '1', name: 'Widget', price: 9.99 });
     service.updateQuantity('1', 0);
@@ -83,7 +97,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('clearCart removes all items', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     service.addItem({ id: '1', name: 'Widget', price: 9.99 });
     service.addItem({ id: '2', name: 'Gadget', price: 19.99 });
@@ -96,7 +112,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('subtotal calculates correct total', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     service.addItem({ id: '1', name: 'Widget', price: 10 });
     service.addItem({ id: '2', name: 'Gadget', price: 20 });
@@ -107,7 +125,9 @@ module('Unit | Service | shopping-cart', function (hooks) {
   });
 
   test('isEmpty returns correct boolean', function (assert) {
-    const service = this.owner.lookup('service:shopping-cart') as ShoppingCartService;
+    const service = this.owner.lookup(
+      'service:shopping-cart'
+    ) as ShoppingCartService;
 
     assert.true(service.isEmpty);
 

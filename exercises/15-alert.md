@@ -3,11 +3,13 @@
 **Difficulty: Medium**
 
 ## Objective
+
 Create an alert component that demonstrates using `@tracked` properties and computed getters for dynamic classes, instead of imperative DOM manipulation with `{{did-insert}}` or `{{did-update}}` modifiers.
 
 ## Why @tracked Over Lifecycle Modifiers?
 
 ### Anti-pattern (Imperative)
+
 ```typescript
 // DON'T do this - imperative class manipulation
 export class Alert extends Component {
@@ -39,6 +41,7 @@ export class Alert extends Component {
 ```
 
 ### Correct Pattern (Declarative)
+
 ```typescript
 // DO this - declarative with computed getter
 export class Alert extends Component {
@@ -61,6 +64,7 @@ export class Alert extends Component {
 ```
 
 The declarative approach is:
+
 - Easier to test (check classes directly, no DOM state)
 - Easier to reason about (data flows one direction)
 - More performant (Glimmer optimizes reactive updates)
@@ -94,12 +98,12 @@ interface AlertSignature {
 
 ## Tailwind Classes by Variant
 
-| Variant | Background | Text | Border (optional) |
-|---------|------------|------|-------------------|
-| info | `bg-blue-100` | `text-blue-800` | `border-blue-300` |
-| success | `bg-green-100` | `text-green-800` | `border-green-300` |
+| Variant | Background      | Text              | Border (optional)   |
+| ------- | --------------- | ----------------- | ------------------- |
+| info    | `bg-blue-100`   | `text-blue-800`   | `border-blue-300`   |
+| success | `bg-green-100`  | `text-green-800`  | `border-green-300`  |
 | warning | `bg-yellow-100` | `text-yellow-800` | `border-yellow-300` |
-| error | `bg-red-100` | `text-red-800` | `border-red-300` |
+| error   | `bg-red-100`    | `text-red-800`    | `border-red-300`    |
 
 ## Data Test Attributes
 
@@ -113,15 +117,19 @@ interface AlertSignature {
 <Alert>This is an informational message.</Alert>
 
 {{! Success alert }}
-<Alert @variant="success">Operation completed successfully!</Alert>
+<Alert @variant='success'>Operation completed successfully!</Alert>
 
 {{! Dismissible error alert }}
-<Alert @variant="error" @dismissible={{true}}>
+<Alert @variant='error' @dismissible={{true}}>
   Something went wrong. Please try again.
 </Alert>
 
 {{! With callback }}
-<Alert @variant="warning" @dismissible={{true}} @onDismiss={{this.handleDismiss}}>
+<Alert
+  @variant='warning'
+  @dismissible={{true}}
+  @onDismiss={{this.handleDismiss}}
+>
   Your session will expire soon.
 </Alert>
 ```

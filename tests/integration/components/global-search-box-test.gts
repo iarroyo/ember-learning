@@ -8,13 +8,11 @@ module('Integration | Component | global-search-box', function (hooks) {
   setupRenderingTest(hooks);
 
   test('it renders with default placeholder', async function (assert) {
-    await render(
-      <template>
-        <GlobalSearchBox />
-      </template>
-    );
+    await render(<template><GlobalSearchBox /></template>);
 
-    assert.dom('[data-test-search-input]').hasAttribute('placeholder', 'Global search...');
+    assert
+      .dom('[data-test-search-input]')
+      .hasAttribute('placeholder', 'Global search...');
   });
 
   test('it renders with custom placeholder', async function (assert) {
@@ -24,32 +22,29 @@ module('Integration | Component | global-search-box', function (hooks) {
       </template>
     );
 
-    assert.dom('[data-test-search-input]').hasAttribute('placeholder', 'Search everywhere...');
+    assert
+      .dom('[data-test-search-input]')
+      .hasAttribute('placeholder', 'Search everywhere...');
   });
 
   test('it shows loading state while searching', async function (assert) {
-    await render(
-      <template>
-        <GlobalSearchBox />
-      </template>
-    );
+    await render(<template><GlobalSearchBox /></template>);
 
-    fillIn('[data-test-search-input]', 'test');
+    void fillIn('[data-test-search-input]', 'test');
     await waitFor('[data-test-search-loading]');
 
     assert.dom('[data-test-search-loading]').exists();
     assert.dom('[data-test-search-cancel]').exists();
 
     // Wait for search to complete
-    await waitUntil(() => !document.querySelector('[data-test-search-loading]'), { timeout: 2000 });
+    await waitUntil(
+      () => !document.querySelector('[data-test-search-loading]'),
+      { timeout: 2000 }
+    );
   });
 
   test('it displays search results from service', async function (assert) {
-    await render(
-      <template>
-        <GlobalSearchBox />
-      </template>
-    );
+    await render(<template><GlobalSearchBox /></template>);
 
     await fillIn('[data-test-search-input]', 'hello');
     // Wait for results to appear
@@ -60,11 +55,7 @@ module('Integration | Component | global-search-box', function (hooks) {
   });
 
   test('it tracks search history', async function (assert) {
-    await render(
-      <template>
-        <GlobalSearchBox />
-      </template>
-    );
+    await render(<template><GlobalSearchBox /></template>);
 
     // First search
     await fillIn('[data-test-search-input]', 'first query');
@@ -77,17 +68,16 @@ module('Integration | Component | global-search-box', function (hooks) {
     // Second search
     await fillIn('[data-test-search-input]', 'second query');
     // Wait for second history entry
-    await waitUntil(() => document.querySelectorAll('[data-test-history-entry]').length === 2, { timeout: 2000 });
+    await waitUntil(
+      () => document.querySelectorAll('[data-test-history-entry]').length === 2,
+      { timeout: 2000 }
+    );
 
     assert.dom('[data-test-history-entry]').exists({ count: 2 });
   });
 
   test('clear history removes all entries', async function (assert) {
-    await render(
-      <template>
-        <GlobalSearchBox />
-      </template>
-    );
+    await render(<template><GlobalSearchBox /></template>);
 
     await fillIn('[data-test-search-input]', 'query');
     // Wait for history entry to appear
@@ -119,12 +109,20 @@ module('Integration | Component | global-search-box', function (hooks) {
     await waitFor('[data-test-box-1] [data-test-search-results-count]');
 
     // Both boxes should show the same results (from shared service)
-    assert.dom('[data-test-box-1] [data-test-search-result]').exists({ count: 2 });
-    assert.dom('[data-test-box-2] [data-test-search-result]').exists({ count: 2 });
+    assert
+      .dom('[data-test-box-1] [data-test-search-result]')
+      .exists({ count: 2 });
+    assert
+      .dom('[data-test-box-2] [data-test-search-result]')
+      .exists({ count: 2 });
 
     // Both should share the same history
-    assert.dom('[data-test-box-1] [data-test-history-entry]').exists({ count: 1 });
-    assert.dom('[data-test-box-2] [data-test-history-entry]').exists({ count: 1 });
+    assert
+      .dom('[data-test-box-1] [data-test-history-entry]')
+      .exists({ count: 1 });
+    assert
+      .dom('[data-test-box-2] [data-test-history-entry]')
+      .exists({ count: 1 });
   });
 
   test('cancelling from one box cancels for all boxes (shared task)', async function (assert) {
@@ -140,7 +138,7 @@ module('Integration | Component | global-search-box', function (hooks) {
     );
 
     // Start search from box 1
-    fillIn('[data-test-box-1] [data-test-search-input]', 'test');
+    void fillIn('[data-test-box-1] [data-test-search-input]', 'test');
     await waitFor('[data-test-box-1] [data-test-search-loading]');
 
     // Both should show loading (shared task)
@@ -156,16 +154,14 @@ module('Integration | Component | global-search-box', function (hooks) {
   });
 
   test('service state persists across component renders', async function (assert) {
-    const globalSearch = this.owner.lookup('service:global-search') as GlobalSearchService;
+    const globalSearch = this.owner.lookup(
+      'service:global-search'
+    ) as GlobalSearchService;
 
     // Pre-populate some history
     await globalSearch.searchTask.perform('pre-existing');
 
-    await render(
-      <template>
-        <GlobalSearchBox />
-      </template>
-    );
+    await render(<template><GlobalSearchBox /></template>);
 
     // Should show pre-existing history
     assert.dom('[data-test-history-entry]').exists({ count: 1 });

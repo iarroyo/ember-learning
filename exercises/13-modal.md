@@ -3,11 +3,13 @@
 **Difficulty: Extreme**
 
 ## Objective
+
 Create a fully accessible modal component using the compound component pattern with co-located subcomponents for Trigger, Header, Body, and Footer.
 
 ## Requirements
 
 Create a single file at `app/components/modal.gts` containing:
+
 - `Modal` - Main modal container (exported)
 - `ModalTrigger` - Button to open modal (internal)
 - `ModalHeader` - Modal header with title and close button (internal)
@@ -25,14 +27,16 @@ interface ModalSignature {
     onClose?: () => void;
   };
   Blocks: {
-    default: [{
-      Trigger: ComponentLike<ModalTriggerSignature>;
-      Header: ComponentLike<ModalHeaderSignature>;
-      Body: ComponentLike<ModalBodySignature>;
-      Footer: ComponentLike<ModalFooterSignature>;
-      close: () => void;
-      isOpen: boolean;
-    }];
+    default: [
+      {
+        Trigger: ComponentLike<ModalTriggerSignature>;
+        Header: ComponentLike<ModalHeaderSignature>;
+        Body: ComponentLike<ModalBodySignature>;
+        Footer: ComponentLike<ModalFooterSignature>;
+        close: () => void;
+        isOpen: boolean;
+      },
+    ];
   };
   Element: HTMLDivElement;
 }
@@ -61,6 +65,7 @@ interface ModalSignature {
 ## Implementation Details
 
 ### File Structure
+
 All components in a single file using co-location pattern:
 
 ```typescript
@@ -75,6 +80,7 @@ export class Modal extends Component<ModalSignature> { ... }
 ```
 
 ### Modal (main)
+
 - Manages open/close state (controlled or uncontrolled)
 - Handles backdrop click
 - Handles Escape key
@@ -82,15 +88,18 @@ export class Modal extends Component<ModalSignature> { ... }
 - Yields subcomponents via `{{component}}` helper with pre-bound args
 
 ### Trigger
+
 - Button that opens modal
 - Stores element reference when clicked for focus return
 
 ### Header
+
 - Template-only component (TOC)
 - Displays title with unique ID for aria-labelledby
 - Has close button
 
 ### Body/Footer
+
 - Template-only components that yield content
 
 ## Usage Example
@@ -100,12 +109,12 @@ export class Modal extends Component<ModalSignature> { ... }
   <modal.Trigger>Open Modal</modal.Trigger>
 
   {{#if modal.isOpen}}
-    <modal.Header @title="My Modal" />
+    <modal.Header @title='My Modal' />
     <modal.Body>
       <p>Modal content goes here</p>
     </modal.Body>
     <modal.Footer>
-      <button {{on "click" modal.close}}>Close</button>
+      <button {{on 'click' modal.close}}>Close</button>
     </modal.Footer>
   {{/if}}
 </Modal>

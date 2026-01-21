@@ -92,6 +92,7 @@ Create `app/components/profile-editor.gts` that demonstrates both patterns side-
 ### Part 1: Anti-Pattern Version (for comparison)
 
 Create a component that uses a single tracked object:
+
 - Has `@tracked state` object with firstName, lastName, email, bio
 - Updates require reassigning the entire object
 - Shows a render counter to demonstrate re-renders
@@ -99,6 +100,7 @@ Create a component that uses a single tracked object:
 ### Part 2: Granular Version (recommended)
 
 Create a component with individual tracked properties:
+
 - Has separate `@tracked` properties for each field
 - Updates are simple direct assignments
 - Shows a render counter to compare re-render behavior
@@ -106,6 +108,7 @@ Create a component with individual tracked properties:
 ### Part 3: Render Tracking
 
 Both versions should:
+
 - Display a "Render count" that increments each time the component's template is evaluated
 - This helps visualize when re-renders occur
 
@@ -142,12 +145,12 @@ interface ProfileData {
 ## Usage Example
 
 ```handlebars
-<div class="grid grid-cols-2 gap-8">
+<div class='grid grid-cols-2 gap-8'>
   {{! Anti-pattern: Single object - notice render count increases on ANY field change }}
-  <ProfileEditor @mode="object" />
+  <ProfileEditor @mode='object' />
 
   {{! Good pattern: Granular - more targeted re-renders }}
-  <ProfileEditor @mode="granular" />
+  <ProfileEditor @mode='granular' />
 </div>
 ```
 
@@ -187,6 +190,7 @@ resetForm() {
 ## Tests to Pass
 
 Run `npm test` and ensure all tests in:
+
 - `Integration | Component | profile-editor`
 
 ## Learning Goals

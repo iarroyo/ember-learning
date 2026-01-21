@@ -12,22 +12,14 @@ module('Integration | Component | user-list', function (hooks) {
   });
 
   test('shows loading skeleton while fetching', async function (assert) {
-    render(
-      <template>
-        <UserList />
-      </template>
-    );
+    void render(<template><UserList /></template>);
 
     await waitFor('[data-test-skeleton]');
     assert.dom('[data-test-skeleton]').exists();
   });
 
   test('renders user list on success', async function (assert) {
-    await render(
-      <template>
-        <UserList />
-      </template>
-    );
+    await render(<template><UserList /></template>);
 
     await waitUntil(() => document.querySelector('[data-test-user-card]'));
 
@@ -38,11 +30,7 @@ module('Integration | Component | user-list', function (hooks) {
   test('shows error with retry button on failure', async function (assert) {
     setMockFailure(true);
 
-    await render(
-      <template>
-        <UserList />
-      </template>
-    );
+    await render(<template><UserList /></template>);
 
     await waitFor('[data-test-error]');
 

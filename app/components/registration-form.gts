@@ -94,14 +94,16 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
   }
 
   get isValid(): boolean {
-    return !this.usernameError &&
-           !this.emailError &&
-           !this.passwordError &&
-           !this.confirmPasswordError &&
-           this.username.length > 0 &&
-           this.email.length > 0 &&
-           this.password.length > 0 &&
-           this.confirmPassword.length > 0;
+    return (
+      !this.usernameError &&
+      !this.emailError &&
+      !this.passwordError &&
+      !this.confirmPasswordError &&
+      this.username.length > 0 &&
+      this.email.length > 0 &&
+      this.password.length > 0 &&
+      this.confirmPassword.length > 0
+    );
   }
 
   @action
@@ -152,7 +154,7 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
       this.args.onSubmit({
         username: this.username,
         email: this.email,
-        password: this.password
+        password: this.password,
       });
       this.submitted = true;
     }
@@ -217,7 +219,9 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
         {{on "blur" this.handleConfirmPasswordBlur}}
       />
       {{#if this.confirmPasswordError}}
-        <div data-test-confirm-password-error>{{this.confirmPasswordError}}</div>
+        <div
+          data-test-confirm-password-error
+        >{{this.confirmPasswordError}}</div>
       {{/if}}
 
       <button
@@ -228,11 +232,7 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
         Submit
       </button>
 
-      <button
-        data-test-clear-button
-        type="button"
-        {{on "click" this.clear}}
-      >
+      <button data-test-clear-button type="button" {{on "click" this.clear}}>
         Clear
       </button>
 
@@ -240,5 +240,5 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
         <div data-test-success-message>Registration successful!</div>
       {{/if}}
     </form>
-  </template>;
+  </template>
 }
