@@ -2,46 +2,97 @@ name: CI
 
 on:
   push:
-    branches:
-      - main
-      - master
+    branches: [main, master]
   pull_request: {}
 
 concurrency:
   group: ci-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: 20
+
 jobs:
-  lint:
-    name: "Lint"
+  install:
+    name: "Install"
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - name: Install Dependencies
+      - uses: actions/cache@v4
+        id: cache
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - if: steps.cache.outputs.cache-hit != 'true'
         run: npm ci
-      - name: Lint
-        run: npm run lint
+
+  lint:
+    name: "Lint"
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - run: npm run lint
+
+  build:
+    name: "Build"
+    needs: install
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.vite
+          key: vite-${{ hashFiles('vite.config.mjs', 'package-lock.json') }}
+          restore-keys: vite-
+      - run: npm run build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 1
 
   test:
     name: "Test"
+    needs: install
     runs-on: ubuntu-latest
     timeout-minutes: 10
-
     steps:
-      - uses: actions/checkout@v3
-      - name: Install Node
-        uses: actions/setup-node@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - name: Install Dependencies
-        run: npm ci
-      - name: Run Tests
-        run: npm test
+      - uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: node-modules-${{ hashFiles('package-lock.json') }}
+      - uses: actions/cache@v4
+        with:
+          path: node_modules/.vite
+          key: vite-${{ hashFiles('vite.config.mjs', 'package-lock.json') }}
+          restore-keys: vite-
+      - run: npm test

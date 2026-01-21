@@ -1,0 +1,37 @@
+version: 2
+
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+    groups:
+      ember:
+        patterns: ["ember-*", "@ember/*", "@embroider/*", "@glimmer/*", "@glint/*"]
+        update-types: ["minor", "patch"]
+      linting:
+        patterns: ["eslint*", "prettier*", "stylelint*", "ember-template-lint*"]
+        update-types: ["minor", "patch"]
+      testing:
+        patterns: ["qunit*", "testem", "@types/qunit"]
+        update-types: ["minor", "patch"]
+    ignore:
+      - dependency-name: "ember-source"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
