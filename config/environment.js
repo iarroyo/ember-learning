@@ -4,7 +4,7 @@ module.exports = function (environment) {
   const ENV = {
     modulePrefix: 'ember-learning',
     environment,
-    rootURL: '/',
+    rootURL: process.env.VITE_BASE_URL || '/',
     locationType: 'history',
     EmberENV: {
       EXTEND_PROTOTYPES: false,
