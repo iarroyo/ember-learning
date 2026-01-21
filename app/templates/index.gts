@@ -2,6 +2,7 @@ import { LinkTo } from '@ember/routing';
 
 import { Button } from 'ember-learning/components/ui/button';
 import { Badge } from 'ember-learning/components/ui/badge';
+import { ThemeSwitcher } from 'ember-learning/components/theme-switcher';
 import {
   Card,
   CardHeader,
@@ -50,6 +51,7 @@ import {
                 </LinkTo>
               </:default>
             </Button>
+            <ThemeSwitcher />
           </div>
         </div>
       </div>
@@ -114,11 +116,10 @@ import {
         </div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {{#each learningCategories as |category|}}
-            <Card @class="overflow-hidden hover:shadow-lg transition-shadow">
-              <CardHeader @class="bg-gradient-to-r from-primary/10 to-primary/5 border-b pb-4">
-                <CardTitle @class="flex items-center gap-3">
-                  <span class="text-2xl">{{category.icon}}</span>
-                  <span>{{category.title}}</span>
+            <Card @class="overflow-hidden hover:shadow-lg transition-shadow pt-0">
+              <CardHeader @class="{{category.titleBg}} border-b">
+                <CardTitle @class="{{category.titleColor}} text-center">
+                  {{category.title}}
                 </CardTitle>
               </CardHeader>
               <CardContent @class="pt-4">

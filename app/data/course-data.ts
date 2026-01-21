@@ -25,7 +25,8 @@ export interface PrerequisiteCategory {
 
 export interface LearningCategory {
   title: string;
-  icon: string;
+  titleColor: string;
+  titleBg: string;
   items: string[];
 }
 
@@ -101,7 +102,8 @@ export const prerequisites: PrerequisiteCategory[] = [
 export const learningCategories: LearningCategory[] = [
   {
     title: 'Components & Templates',
-    icon: '🧩',
+    titleColor: 'text-emerald-600',
+    titleBg: 'bg-emerald-100',
     items: [
       'Glimmer component structure with .gts files',
       'Component arguments (@args) and default values',
@@ -112,7 +114,8 @@ export const learningCategories: LearningCategory[] = [
   },
   {
     title: 'Services & State',
-    icon: '🔄',
+    titleColor: 'text-orange-600',
+    titleBg: 'bg-orange-100',
     items: [
       'Creating and using services',
       'Service injection with @service',
@@ -123,18 +126,19 @@ export const learningCategories: LearningCategory[] = [
   },
   {
     title: 'Forms & Validation',
-    icon: '📝',
+    titleColor: 'text-blue-600',
+    titleBg: 'bg-blue-100',
     items: [
       'Form submission handling',
       'Two-way data binding with inputs',
       'Async operations with loading states',
       'Complex form validation patterns',
-      'Password strength algorithms',
     ],
   },
   {
     title: 'Async Patterns',
-    icon: '⚡',
+    titleColor: 'text-amber-600',
+    titleBg: 'bg-amber-100',
     items: [
       'Loading/error/success states',
       'AbortController for request cancellation',
@@ -145,7 +149,8 @@ export const learningCategories: LearningCategory[] = [
   },
   {
     title: 'Testing',
-    icon: '🧪',
+    titleColor: 'text-violet-600',
+    titleBg: 'bg-violet-100',
     items: [
       '@ember/test-waiters for async sync',
       'waitForPromise for async wrapping',
@@ -156,7 +161,8 @@ export const learningCategories: LearningCategory[] = [
   },
   {
     title: 'Lifecycle & Cleanup',
-    icon: '♻️',
+    titleColor: 'text-rose-600',
+    titleBg: 'bg-rose-100',
     items: [
       'Component lifecycle (willDestroy)',
       'registerDestructor for custom cleanup',

@@ -14,6 +14,7 @@ import { ProfileEditor } from 'ember-learning/components/profile-editor';
 
 import { Button } from 'ember-learning/components/ui/button';
 import { Badge } from 'ember-learning/components/ui/badge';
+import { ThemeSwitcher } from 'ember-learning/components/theme-switcher';
 import {
   Card,
   CardHeader,
@@ -73,6 +74,7 @@ class DemoPage extends Component {
               <Button @variant="ghost" @class="text-primary">
                 Demo
               </Button>
+              <ThemeSwitcher />
             </div>
           </div>
         </div>
