@@ -10,9 +10,9 @@ module('Unit | Route | products', function (hooks) {
     assert.ok(route);
   });
 
-  test('model hook returns all products', async function (assert) {
+  test('model hook returns all products', function (assert) {
     const route = this.owner.lookup('route:products') as ProductsRoute;
-    const model = await route.model();
+    const model = route.model();
 
     assert.strictEqual(model.length, 3);
     assert.strictEqual(model[0]?.name, 'Wireless Headphones');
