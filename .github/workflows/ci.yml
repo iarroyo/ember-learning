@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         id: cache
         with:
           path: node_modules
@@ -42,7 +42,7 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
@@ -59,11 +59,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: node_modules/.vite
           key: vite-${{ hashFiles('vite.config.mjs', 'package-lock.json') }}
@@ -86,11 +86,11 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
           cache: npm
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: node_modules
           key: node-modules-${{ hashFiles('package-lock.json') }}
-      - uses: actions/cache@v4
+      - uses: actions/cache@v5
         with:
           path: node_modules/.vite
           key: vite-${{ hashFiles('vite.config.mjs', 'package-lock.json') }}
