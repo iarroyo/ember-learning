@@ -4,6 +4,8 @@ import { action } from '@ember/object';
 import { fn, hash } from '@ember/helper';
 import { on } from '@ember/modifier';
 import { LinkTo } from '@ember/routing';
+import { service } from '@ember/service';
+import type RouterService from '@ember/routing/router-service';
 
 import { Alert } from 'ember-learning/components/alert';
 import { AsyncButton } from 'ember-learning/components/async-button';
@@ -54,6 +56,20 @@ type ComponentView =
   | 'forms'
   | 'users'
   | 'products';
+
+const validViews: ComponentView[] = [
+  'ui-components',
+  'counter',
+  'alert',
+  'modal',
+  'async-button',
+  'search',
+  'global-search',
+  'profile',
+  'forms',
+  'users',
+  'products',
+];
 
 interface NavItem {
   id: ComponentView;
@@ -112,15 +128,37 @@ const sampleProducts = [
 ];
 
 class DemoPage extends Component {
-  @tracked currentView: ComponentView = 'ui-components';
+  @service declare router: RouterService;
+
+  @tracked private _view: ComponentView | null = null;
   @tracked alertVariant: AlertVariant = 'info';
   @tracked formMessage: string | null = null;
 
   navItems = navItems;
 
+  get currentView(): ComponentView {
+    // If we have a locally set view, use it
+    if (this._view) {
+      return this._view;
+    }
+
+    // Otherwise read from URL query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const view = urlParams.get('view') as ComponentView | null;
+
+    if (view && validViews.includes(view)) {
+      return view;
+    }
+    return 'ui-components';
+  }
+
   @action
   setView(view: ComponentView): void {
-    this.currentView = view;
+    // Update tracked state immediately for reactivity
+    this._view = view;
+
+    // Update URL query parameter without full page reload
+    void this.router.transitionTo('demo', { queryParams: { view } });
   }
 
   @action
