@@ -204,7 +204,7 @@ module('Integration | Component | modal', function (hooks) {
       </template>
     );
 
-    assert.dom('[data-test-modal-content]').hasClass('modal__content--lg');
+    assert.dom('[data-test-modal-content]').hasClass('max-w-lg');
   });
 
   test('has correct ARIA attributes', async function (assert) {

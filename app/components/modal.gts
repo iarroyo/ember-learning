@@ -49,16 +49,38 @@ export interface ModalHeaderSignature {
 }
 
 const ModalHeader = <TOC<ModalHeaderSignature>><template>
-  <div data-test-modal-header>
-    <h2 data-test-modal-title id={{@titleId}}>{{@title}}</h2>
+  <div
+    data-test-modal-header
+    class="flex items-center justify-between p-4 border-b"
+  >
+    <h2
+      data-test-modal-title
+      id={{@titleId}}
+      class="text-lg font-semibold text-foreground"
+    >
+      {{@title}}
+    </h2>
     {{#if @onClose}}
       <button
         data-test-modal-close
         type="button"
         aria-label="Close modal"
+        class="text-muted-foreground hover:text-foreground transition-colors p-1 rounded-md hover:bg-muted"
         {{on "click" @onClose}}
       >
-        ×
+        <svg
+          class="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        </svg>
       </button>
     {{/if}}
   </div>
@@ -74,7 +96,7 @@ export interface ModalBodySignature {
 }
 
 const ModalBody = <TOC<ModalBodySignature>><template>
-  <div data-test-modal-body>
+  <div data-test-modal-body class="p-4">
     {{yield}}
   </div>
 </template>;
@@ -89,7 +111,7 @@ export interface ModalFooterSignature {
 }
 
 const ModalFooter = <TOC<ModalFooterSignature>><template>
-  <div data-test-modal-footer>
+  <div data-test-modal-footer class="flex justify-end gap-2 p-4 border-t">
     {{yield}}
   </div>
 </template>;
@@ -141,7 +163,12 @@ export class Modal extends Component<ModalSignature> {
 
   get sizeClass(): string {
     const size = this.args.size ?? 'md';
-    return `modal__content--${size}`;
+    const sizes = {
+      sm: 'max-w-sm',
+      md: 'max-w-md',
+      lg: 'max-w-lg',
+    };
+    return sizes[size] ?? sizes.md;
   }
 
   get titleId(): string {
@@ -214,15 +241,19 @@ export class Modal extends Component<ModalSignature> {
           role="dialog"
           aria-modal="true"
           aria-labelledby={{this.titleId}}
+          class="fixed inset-0 z-50"
           {{on "keydown" this.handleKeyDown}}
           {{focusOnInsert}}
         >
           <div
             data-test-modal-backdrop
-            class="modal-backdrop"
+            class="fixed inset-0 bg-black/50 flex items-center justify-center p-4"
             {{on "click" this.handleBackdropClick}}
           >
-            <div data-test-modal-content class={{this.sizeClass}}>
+            <div
+              data-test-modal-content
+              class="bg-card rounded-lg shadow-xl w-full {{this.sizeClass}} animate-in zoom-in-95 fade-in duration-200"
+            >
               {{yield
                 (hash
                   Trigger=Trigger
