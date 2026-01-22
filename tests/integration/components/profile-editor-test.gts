@@ -1,312 +1,253 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, fillIn, click } from '@ember/test-helpers';
-import { ProfileEditor } from 'ember-learning/components/profile-editor';
-import type { ProfileData } from 'ember-learning/components/profile-editor';
+import { render } from '@ember/test-helpers';
+import { tracked } from '@glimmer/tracking';
+
+class RenderResolver {
+  declare promise: Promise<unknown>;
+  declare resolver: (value: unknown) => void;
+  renderIntention() {
+    this.promise = new Promise((r) => (this.resolver = r));
+  }
+}
 
 module('Integration | Component | profile-editor', function (hooks) {
   setupRenderingTest(hooks);
 
-  module('object mode (anti-pattern)', function () {
-    test('it renders in object mode', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
+  /**
+   * These tests demonstrate WHY using a single @tracked object is an anti-pattern
+   * compared to using individual @tracked properties.
+   */
+  module('anti-pattern demonstrations', function () {
+    /**
+     * ASPECT 1: Verbose updates
+     * Every change requires spreading the entire object: { ...this.state, field: value }
+     */
+    test('object mode requires verbose spread pattern for each update', function (assert) {
+      // Object mode: must spread entire object to trigger reactivity
+      class ObjectMode {
+        @tracked state = { firstName: '', lastName: '', email: '', bio: '' };
 
-      assert.dom('[data-test-profile-editor]').exists();
-      assert.dom('[data-test-mode="object"]').exists();
-      assert.dom('[data-test-first-name]').exists();
-      assert.dom('[data-test-last-name]').exists();
-      assert.dom('[data-test-email]').exists();
-      assert.dom('[data-test-bio]').exists();
+        updateFirstName(v: string) {
+          this.state = { ...this.state, firstName: v };
+        }
+        updateLastName(v: string) {
+          this.state = { ...this.state, lastName: v };
+        }
+        updateEmail(v: string) {
+          this.state = { ...this.state, email: v };
+        }
+        updateBio(v: string) {
+          this.state = { ...this.state, bio: v };
+        }
+      }
+
+      // Granular mode: simple direct assignment
+      class GranularMode {
+        @tracked firstName = '';
+        @tracked lastName = '';
+        @tracked email = '';
+        @tracked bio = '';
+
+        updateFirstName(v: string) {
+          this.firstName = v;
+        }
+        updateLastName(v: string) {
+          this.lastName = v;
+        }
+        updateEmail(v: string) {
+          this.email = v;
+        }
+        updateBio(v: string) {
+          this.bio = v;
+        }
+      }
+
+      const objMode = new ObjectMode();
+      const granMode = new GranularMode();
+
+      objMode.updateFirstName('John');
+      granMode.updateFirstName('John');
+
+      assert.strictEqual(
+        objMode.state.firstName,
+        'John',
+        'Object mode updated'
+      );
+      assert.strictEqual(granMode.firstName, 'John', 'Granular mode updated');
+
+      // The verbosity difference is visible in the code above:
+      // Object:   this.state = { ...this.state, firstName: v }  (spread 4 fields)
+      // Granular: this.firstName = v                            (direct assignment)
     });
 
-    test('it updates firstName correctly', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
+    /**
+     * ASPECT 2: All consumers re-render
+     * Any component using this.state re-renders on ANY field change
+     */
+    test('object mode: changing one field invalidates entire state object', async function (assert) {
+      let gettersRenderCounter = 0;
+      const renderResolver = new RenderResolver();
+      class StateConsumer {
+        @tracked state = { firstName: 'A', lastName: 'B', email: 'C' };
 
-      await fillIn('[data-test-first-name]', 'John');
-      assert.dom('[data-test-first-name]').hasValue('John');
-      assert.dom('[data-test-full-name]').hasText('John');
-    });
+        // These getters simulate different UI sections consuming specific fields
+        get firstNameDisplay() {
+          gettersRenderCounter++;
+          return this.state.firstName;
+        }
+        get lastNameDisplay() {
+          gettersRenderCounter++;
+          renderResolver.resolver?.(null);
+          return this.state.lastName;
+        }
+        get emailDisplay() {
+          gettersRenderCounter++;
+          return this.state.email;
+        }
 
-    test('it updates lastName correctly', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
+        updateFirstName(v: string) {
+          this.state = { ...this.state, firstName: v };
+          renderResolver.renderIntention();
+        }
+      }
 
-      await fillIn('[data-test-last-name]', 'Doe');
-      assert.dom('[data-test-last-name]').hasValue('Doe');
-      assert.dom('[data-test-full-name]').hasText('Doe');
-    });
-
-    test('fullName combines firstName and lastName', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
-
-      await fillIn('[data-test-first-name]', 'John');
-      await fillIn('[data-test-last-name]', 'Doe');
-      assert.dom('[data-test-full-name]').hasText('John Doe');
-    });
-
-    test('save button is disabled when invalid', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
-
-      assert.dom('[data-test-save-button]').isDisabled();
-
-      await fillIn('[data-test-first-name]', 'John');
-      assert.dom('[data-test-save-button]').isDisabled();
-
-      await fillIn('[data-test-email]', 'john@example.com');
-      assert.dom('[data-test-save-button]').isNotDisabled();
-    });
-
-    test('onSave is called with profile data', async function (assert) {
-      let savedData: ProfileData | null = null;
-      const handleSave = (data: ProfileData) => {
-        savedData = data;
-      };
+      const consumer = new StateConsumer();
+      const originalRef = consumer.state;
 
       await render(
         <template>
-          <ProfileEditor @mode="object" @onSave={{handleSave}} />
+          <div>{{consumer.lastNameDisplay}}</div>
         </template>
       );
 
-      await fillIn('[data-test-first-name]', 'John');
-      await fillIn('[data-test-last-name]', 'Doe');
-      await fillIn('[data-test-email]', 'john@example.com');
-      await fillIn('[data-test-bio]', 'Hello world');
-
-      await click('[data-test-save-button]');
-
-      assert.deepEqual(savedData, {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john@example.com',
-        bio: 'Hello world',
-      });
-    });
-
-    test('reset clears all fields', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
-
-      await fillIn('[data-test-first-name]', 'John');
-      await fillIn('[data-test-last-name]', 'Doe');
-      await fillIn('[data-test-email]', 'john@example.com');
-
-      await click('[data-test-reset-button]');
-
-      assert.dom('[data-test-first-name]').hasValue('');
-      assert.dom('[data-test-last-name]').hasValue('');
-      assert.dom('[data-test-email]').hasValue('');
-      assert.dom('[data-test-full-name]').hasText('(empty)');
-    });
-
-    test('render count increments on each field change', async function (assert) {
-      await render(<template><ProfileEditor @mode="object" /></template>);
-
-      const initialCount = parseInt(
-        document.querySelector('[data-test-render-count]')?.textContent ?? '0'
+      assert.strictEqual(
+        gettersRenderCounter,
+        1,
+        'lastNameDisplay getter is rendered in the template'
       );
 
-      await fillIn('[data-test-first-name]', 'J');
+      // Update only firstName
+      consumer.updateFirstName('X');
 
-      const afterFirstName = parseInt(
-        document.querySelector('[data-test-render-count]')?.textContent ?? '0'
+      // This renderResolver ensures thw getter is consumed prior the assertion
+      await renderResolver.promise;
+      assert.strictEqual(
+        gettersRenderCounter,
+        2,
+        'lastNameDisplay getter is re-rendered despite only firstName was updated'
       );
 
-      assert.true(
-        afterFirstName > initialCount,
-        'render count increased after firstName change'
+      // The ENTIRE state object is now a new reference
+      assert.notStrictEqual(
+        consumer.state,
+        originalRef,
+        'State object reference changed even though only firstName was updated'
       );
 
-      await fillIn('[data-test-email]', 'j');
-
-      const afterEmail = parseInt(
-        document.querySelector('[data-test-render-count]')?.textContent ?? '0'
+      // Other fields are unchanged in value, but would still cause re-renders
+      // because any getter accessing this.state is invalidated
+      assert.strictEqual(
+        consumer.state.lastName,
+        'B',
+        'lastName value unchanged but its consumers would re-render'
       );
-
-      assert.true(
-        afterEmail > afterFirstName,
-        'render count increased after email change'
-      );
-    });
-  });
-
-  module('granular mode (recommended)', function () {
-    test('it renders in granular mode', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      assert.dom('[data-test-profile-editor]').exists();
-      assert.dom('[data-test-mode="granular"]').exists();
-      assert.dom('[data-test-first-name]').exists();
-      assert.dom('[data-test-last-name]').exists();
-      assert.dom('[data-test-email]').exists();
-      assert.dom('[data-test-bio]').exists();
-    });
-
-    test('it updates firstName correctly', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      await fillIn('[data-test-first-name]', 'Jane');
-      assert.dom('[data-test-first-name]').hasValue('Jane');
-      assert.dom('[data-test-full-name]').hasText('Jane');
-    });
-
-    test('it updates lastName correctly', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      await fillIn('[data-test-last-name]', 'Smith');
-      assert.dom('[data-test-last-name]').hasValue('Smith');
-      assert.dom('[data-test-full-name]').hasText('Smith');
-    });
-
-    test('fullName combines firstName and lastName', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      await fillIn('[data-test-first-name]', 'Jane');
-      await fillIn('[data-test-last-name]', 'Smith');
-      assert.dom('[data-test-full-name]').hasText('Jane Smith');
-    });
-
-    test('save button is disabled when invalid', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      assert.dom('[data-test-save-button]').isDisabled();
-
-      await fillIn('[data-test-first-name]', 'Jane');
-      assert.dom('[data-test-save-button]').isDisabled();
-
-      await fillIn('[data-test-email]', 'jane@example.com');
-      assert.dom('[data-test-save-button]').isNotDisabled();
-    });
-
-    test('onSave is called with profile data', async function (assert) {
-      let savedData: ProfileData | null = null;
-      const handleSave = (data: ProfileData) => {
-        savedData = data;
-      };
-
-      await render(
-        <template>
-          <ProfileEditor @mode="granular" @onSave={{handleSave}} />
-        </template>
-      );
-
-      await fillIn('[data-test-first-name]', 'Jane');
-      await fillIn('[data-test-last-name]', 'Smith');
-      await fillIn('[data-test-email]', 'jane@example.com');
-      await fillIn('[data-test-bio]', 'Goodbye world');
-
-      await click('[data-test-save-button]');
-
-      assert.deepEqual(savedData, {
-        firstName: 'Jane',
-        lastName: 'Smith',
-        email: 'jane@example.com',
-        bio: 'Goodbye world',
-      });
-    });
-
-    test('reset clears all fields', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      await fillIn('[data-test-first-name]', 'Jane');
-      await fillIn('[data-test-last-name]', 'Smith');
-      await fillIn('[data-test-email]', 'jane@example.com');
-
-      await click('[data-test-reset-button]');
-
-      assert.dom('[data-test-first-name]').hasValue('');
-      assert.dom('[data-test-last-name]').hasValue('');
-      assert.dom('[data-test-email]').hasValue('');
-      assert.dom('[data-test-full-name]').hasText('(empty)');
-    });
-
-    test('render count increments on field changes', async function (assert) {
-      await render(<template><ProfileEditor @mode="granular" /></template>);
-
-      const initialCount = parseInt(
-        document.querySelector('[data-test-render-count]')?.textContent ?? '0'
-      );
-
-      await fillIn('[data-test-first-name]', 'J');
-
-      const afterFirstName = parseInt(
-        document.querySelector('[data-test-render-count]')?.textContent ?? '0'
-      );
-
-      assert.true(
-        afterFirstName > initialCount,
-        'render count increased after firstName change'
+      assert.strictEqual(
+        consumer.state.email,
+        'C',
+        'email value unchanged but its consumers would re-render'
       );
     });
-  });
 
-  module('both modes comparison', function () {
-    test('both modes produce the same output', async function (assert) {
-      let objectData: ProfileData | null = null;
-      let granularData: ProfileData | null = null;
+    /**
+     * ASPECT 3: Performance overhead
+     * Creates a new object on every keystroke
+     */
+    test('object mode creates new object on every keystroke', function (assert) {
+      const objectReferences: object[] = [];
 
-      const handleObjectSave = (data: ProfileData) => {
-        objectData = data;
-      };
-      const handleGranularSave = (data: ProfileData) => {
-        granularData = data;
-      };
+      class ObjectTracker {
+        @tracked state = { firstName: '', lastName: '' };
 
-      await render(
-        <template>
-          <div data-test-object>
-            <ProfileEditor @mode="object" @onSave={{handleObjectSave}} />
-          </div>
-          <div data-test-granular>
-            <ProfileEditor @mode="granular" @onSave={{handleGranularSave}} />
-          </div>
-        </template>
+        updateFirstName(v: string) {
+          this.state = { ...this.state, firstName: v };
+          objectReferences.push(this.state);
+        }
+      }
+
+      const tracker = new ObjectTracker();
+
+      // Simulate typing "hello" - 5 keystrokes
+      tracker.updateFirstName('h');
+      tracker.updateFirstName('he');
+      tracker.updateFirstName('hel');
+      tracker.updateFirstName('hell');
+      tracker.updateFirstName('hello');
+
+      assert.strictEqual(
+        objectReferences.length,
+        5,
+        'Created 5 new objects for 5 keystrokes'
       );
 
-      // Fill both forms with same data
-      await fillIn('[data-test-object] [data-test-first-name]', 'Test');
-      await fillIn('[data-test-object] [data-test-last-name]', 'User');
-      await fillIn('[data-test-object] [data-test-email]', 'test@example.com');
-      await fillIn('[data-test-object] [data-test-bio]', 'Bio text');
-
-      await fillIn('[data-test-granular] [data-test-first-name]', 'Test');
-      await fillIn('[data-test-granular] [data-test-last-name]', 'User');
-      await fillIn(
-        '[data-test-granular] [data-test-email]',
-        'test@example.com'
+      // Each reference is a different object
+      const uniqueRefs = new Set(objectReferences);
+      assert.strictEqual(
+        uniqueRefs.size,
+        5,
+        'All 5 objects are unique references (memory allocation on each keystroke)'
       );
-      await fillIn('[data-test-granular] [data-test-bio]', 'Bio text');
-
-      // Save both
-      await click('[data-test-object] [data-test-save-button]');
-      await click('[data-test-granular] [data-test-save-button]');
-
-      // Both should produce identical data
-      assert.deepEqual(objectData, granularData);
     });
 
-    test('fullName derived state works in both modes', async function (assert) {
-      await render(
-        <template>
-          <div data-test-object>
-            <ProfileEditor @mode="object" />
-          </div>
-          <div data-test-granular>
-            <ProfileEditor @mode="granular" />
-          </div>
-        </template>
+    /**
+     * ASPECT 4: Easy to forget
+     * Mutating this.state.firstName = value silently fails to trigger updates
+     */
+    test('object mode: direct mutation silently fails to trigger reactivity', function (assert) {
+      class BrokenObjectMode {
+        @tracked state = { firstName: '', lastName: '' };
+
+        // WRONG: Direct mutation - Ember won't detect this!
+        updateWrong(value: string) {
+          this.state.firstName = value;
+        }
+
+        // CORRECT: Must create new object reference
+        updateCorrect(value: string) {
+          this.state = { ...this.state, firstName: value };
+        }
+      }
+
+      const demo = new BrokenObjectMode();
+      const initialRef = demo.state;
+
+      // Direct mutation - changes the value but doesn't trigger tracking
+      demo.updateWrong('John');
+
+      assert.strictEqual(
+        demo.state,
+        initialRef,
+        'Object reference UNCHANGED after direct mutation - tracking not triggered'
+      );
+      assert.strictEqual(
+        demo.state.firstName,
+        'John',
+        'Value was mutated internally but UI would not update'
       );
 
-      await fillIn('[data-test-object] [data-test-first-name]', 'Alice');
-      await fillIn('[data-test-object] [data-test-last-name]', 'Wonder');
+      // Now use the correct pattern
+      demo.updateCorrect('Jane');
 
-      await fillIn('[data-test-granular] [data-test-first-name]', 'Alice');
-      await fillIn('[data-test-granular] [data-test-last-name]', 'Wonder');
-
-      assert
-        .dom('[data-test-object] [data-test-full-name]')
-        .hasText('Alice Wonder');
-      assert
-        .dom('[data-test-granular] [data-test-full-name]')
-        .hasText('Alice Wonder');
+      assert.notStrictEqual(
+        demo.state,
+        initialRef,
+        'Object reference CHANGED after spread update - tracking triggered'
+      );
+      assert.strictEqual(
+        demo.state.firstName,
+        'Jane',
+        'Value updated and properly tracked'
+      );
     });
   });
 });

@@ -46,7 +46,6 @@ class ProfileEditor extends Component {
 2. **All consumers re-render** - Any component using `this.state` re-renders on ANY field change
 3. **Performance overhead** - Creates a new object on every keystroke
 4. **Easy to forget** - Mutating `this.state.firstName = value` silently fails to trigger updates
-5. **Poor TypeScript inference** - Harder to track which fields are being used where
 
 ## The Solution: Granular Tracked Properties
 
@@ -82,8 +81,7 @@ class ProfileEditor extends Component {
 2. **Targeted re-renders** - Only components using `firstName` re-render when it changes
 3. **No object allocation** - No spreading, no new object creation
 4. **Fail-fast** - Non-tracked properties obviously don't update the UI
-5. **Better TypeScript** - Each property has clear types and usage tracking
-6. **Natural derived state** - Getters automatically track their dependencies
+5. **Natural derived state** - Getters automatically track their dependencies
 
 ## Requirements
 
