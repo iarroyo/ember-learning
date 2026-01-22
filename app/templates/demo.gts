@@ -63,17 +63,37 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'ui-components', label: 'UI Components', badge: 'Base', category: 'Foundation' },
+  {
+    id: 'ui-components',
+    label: 'UI Components',
+    badge: 'Base',
+    category: 'Foundation',
+  },
   { id: 'counter', label: 'Counter', badge: '#02', category: 'Foundation' },
   { id: 'alert', label: 'Alert', badge: '#15', category: 'Feedback' },
   { id: 'modal', label: 'Modal', badge: '#16', category: 'Feedback' },
-  { id: 'async-button', label: 'Async Button', badge: '#17', category: 'Feedback' },
+  {
+    id: 'async-button',
+    label: 'Async Button',
+    badge: '#17',
+    category: 'Feedback',
+  },
   { id: 'search', label: 'Search Box', badge: '#18', category: 'Data' },
-  { id: 'global-search', label: 'Global Search', badge: '#18', category: 'Data' },
+  {
+    id: 'global-search',
+    label: 'Global Search',
+    badge: '#18',
+    category: 'Data',
+  },
   { id: 'profile', label: 'Profile Editor', badge: '#19', category: 'Data' },
   { id: 'forms', label: 'Forms', badge: 'Auth', category: 'Authentication' },
   { id: 'users', label: 'Users', badge: 'Data', category: 'Data' },
-  { id: 'products', label: 'Products', badge: 'E-comm', category: 'E-commerce' },
+  {
+    id: 'products',
+    label: 'Products',
+    badge: 'E-comm',
+    category: 'E-commerce',
+  },
 ];
 
 // Sample data for demos
@@ -140,7 +160,10 @@ class DemoPage extends Component {
   <template>
     <div class="min-h-screen bg-background">
       {{! Navigation }}
-      <nav class="bg-card border-b sticky top-0 z-50">
+      <nav
+        aria-label="Main navigation"
+        class="bg-card border-b sticky top-0 z-50"
+      >
         <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex justify-between h-16">
             <div class="flex items-center">
@@ -197,10 +220,12 @@ class DemoPage extends Component {
           class="w-64 border-r bg-card/50 min-h-[calc(100vh-4rem)] sticky top-16 overflow-y-auto"
         >
           <div class="p-4">
-            <h2 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4">
+            <h2
+              class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-4"
+            >
               Components
             </h2>
-            <nav class="space-y-1">
+            <nav aria-label="Component navigation" class="space-y-1">
               {{#each this.navItems as |item|}}
                 <button
                   type="button"
@@ -219,7 +244,10 @@ class DemoPage extends Component {
                       "outline"
                       "secondary"
                     }}
-                    @class="text-xs {{if (eq this.currentView item.id) 'border-primary-foreground/30 text-primary-foreground'}}"
+                    @class="text-xs {{if
+                      (eq this.currentView item.id)
+                      'border-primary-foreground/30 text-primary-foreground'
+                    }}"
                   >
                     {{item.badge}}
                   </Badge>
@@ -722,8 +750,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-amber-500/10 to-orange-600/10 border-b"
                 >
                   <CardTitle>Search Box Component</CardTitle>
-                  <CardDescription>Independent task instances per
-                    component</CardDescription>
+                  <CardDescription>Independent task instances per component</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -773,8 +800,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-cyan-500/10 to-blue-600/10 border-b"
                 >
                   <CardTitle>Global Search Box Component</CardTitle>
-                  <CardDescription>Shared task state across
-                    components</CardDescription>
+                  <CardDescription>Shared task state across components</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -817,8 +843,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-rose-500/10 to-pink-600/10 border-b"
                 >
                   <CardTitle>Profile Editor Component</CardTitle>
-                  <CardDescription>Object vs granular state
-                    comparison</CardDescription>
+                  <CardDescription>Object vs granular state comparison</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -851,8 +876,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-sky-500/10 to-cyan-600/10 border-b"
                 >
                   <CardTitle>Login Form</CardTitle>
-                  <CardDescription>Authentication form with async
-                    submission</CardDescription>
+                  <CardDescription>Authentication form with async submission</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -878,8 +902,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-lime-500/10 to-green-600/10 border-b"
                 >
                   <CardTitle>Registration Form</CardTitle>
-                  <CardDescription>Multi-field validation with password
-                    strength</CardDescription>
+                  <CardDescription>Multi-field validation with password strength</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -910,8 +933,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-teal-500/10 to-emerald-600/10 border-b"
                 >
                   <CardTitle>User List Component</CardTitle>
-                  <CardDescription>Async data loading with state
-                    management</CardDescription>
+                  <CardDescription>Async data loading with state management</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -933,8 +955,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-blue-500/10 to-indigo-600/10 border-b"
                 >
                   <CardTitle>User Card Component</CardTitle>
-                  <CardDescription>Individual user display with derived
-                    state</CardDescription>
+                  <CardDescription>Individual user display with derived state</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">
@@ -985,8 +1006,7 @@ class DemoPage extends Component {
                   @class="bg-gradient-to-r from-orange-500/10 to-red-600/10 border-b"
                 >
                   <CardTitle>Product Card Component</CardTitle>
-                  <CardDescription>Shopping cart integration via
-                    service</CardDescription>
+                  <CardDescription>Shopping cart integration via service</CardDescription>
                 </CardHeader>
                 <CardContent @class="pt-6">
                   <p class="text-muted-foreground mb-6">

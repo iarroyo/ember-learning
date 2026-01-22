@@ -252,7 +252,9 @@ export class Modal extends Component<ModalSignature> {
           >
             <div
               data-test-modal-content
-              class="bg-card rounded-lg shadow-xl w-full {{this.sizeClass}} animate-in zoom-in-95 fade-in duration-200"
+              class="bg-card rounded-lg shadow-xl w-full
+                {{this.sizeClass}}
+                animate-in zoom-in-95 fade-in duration-200"
             >
               {{yield
                 (hash

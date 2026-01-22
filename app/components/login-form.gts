@@ -109,11 +109,7 @@ export class LoginForm extends Component<LoginFormSignature> {
             data-test-loading
             class="flex items-center gap-2 text-sm text-muted-foreground"
           >
-            <svg
-              class="animate-spin h-4 w-4"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
+            <svg class="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
               <circle
                 class="opacity-25"
                 cx="12"

@@ -261,6 +261,7 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
         >
           Password
         </label>
+        {{! template-lint-disable no-unsupported-role-attributes }}
         <input
           id="reg-password"
           data-test-password-input
@@ -268,7 +269,10 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
           value={{this.password}}
           autocomplete="new-password"
           placeholder="••••••••"
-          aria-describedby="reg-password-hint {{if this.passwordError 'reg-password-error'}}"
+          aria-describedby="reg-password-hint {{if
+            this.passwordError
+            'reg-password-error'
+          }}"
           aria-invalid={{if this.passwordError "true"}}
           class="w-full px-3 py-2 border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
             {{if this.passwordError 'border-destructive' 'border-input'}}"
@@ -305,6 +309,7 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
         >
           Confirm Password
         </label>
+        {{! template-lint-disable no-unsupported-role-attributes }}
         <input
           id="reg-confirm-password"
           data-test-confirm-password-input
@@ -312,10 +317,17 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
           value={{this.confirmPassword}}
           autocomplete="new-password"
           placeholder="••••••••"
-          aria-describedby={{if this.confirmPasswordError "reg-confirm-password-error"}}
+          aria-describedby={{if
+            this.confirmPasswordError
+            "reg-confirm-password-error"
+          }}
           aria-invalid={{if this.confirmPasswordError "true"}}
           class="w-full px-3 py-2 border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
-            {{if this.confirmPasswordError 'border-destructive' 'border-input'}}"
+            {{if
+              this.confirmPasswordError
+              'border-destructive'
+              'border-input'
+            }}"
           {{on "input" this.updateConfirmPassword}}
           {{on "blur" this.handleConfirmPasswordBlur}}
         />
