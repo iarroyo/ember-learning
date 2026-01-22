@@ -63,35 +63,73 @@ export class LoginForm extends Component<LoginFormSignature> {
   }
 
   <template>
-    <form {{on "submit" this.handleSubmit}}>
-      <div>
-        <label for="login-email">Email</label>
+    <form class="space-y-4" {{on "submit" this.handleSubmit}}>
+      <div class="space-y-2">
+        <label
+          for="login-email"
+          class="block text-sm font-medium text-foreground"
+        >
+          Email
+        </label>
         <input
           id="login-email"
           data-test-email-input
           type="email"
           value={{this.email}}
           autocomplete="email"
+          placeholder="you@example.com"
           aria-describedby={{if this.error "login-error"}}
+          class="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
           {{on "input" this.updateEmail}}
         />
       </div>
-      <div>
-        <label for="login-password">Password</label>
+      <div class="space-y-2">
+        <label
+          for="login-password"
+          class="block text-sm font-medium text-foreground"
+        >
+          Password
+        </label>
         <input
           id="login-password"
           data-test-password-input
           type="password"
           value={{this.password}}
           autocomplete="current-password"
+          placeholder="••••••••"
           aria-describedby={{if this.error "login-error"}}
+          class="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
           {{on "input" this.updatePassword}}
         />
       </div>
 
       <div aria-live="polite" aria-atomic="true">
         {{#if this.isLoading}}
-          <div data-test-loading>Loading...</div>
+          <div
+            data-test-loading
+            class="flex items-center gap-2 text-sm text-muted-foreground"
+          >
+            <svg
+              class="animate-spin h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
+            Signing in...
+          </div>
         {{/if}}
 
         {{#if this.error}}
@@ -99,7 +137,10 @@ export class LoginForm extends Component<LoginFormSignature> {
             id="login-error"
             data-test-error
             role="alert"
-          >{{this.error}}</div>
+            class="text-sm text-destructive bg-destructive/10 px-3 py-2 rounded-md"
+          >
+            {{this.error}}
+          </div>
         {{/if}}
       </div>
 
@@ -108,8 +149,9 @@ export class LoginForm extends Component<LoginFormSignature> {
         type="submit"
         disabled={{not this.isValid}}
         aria-disabled={{not this.isValid}}
+        class="w-full px-4 py-2 bg-primary text-primary-foreground font-medium rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
       >
-        Submit
+        Sign In
       </button>
     </form>
   </template>

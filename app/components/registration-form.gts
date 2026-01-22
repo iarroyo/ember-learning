@@ -173,66 +173,115 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
     this.submitted = false;
   }
 
+  get passwordStrengthColor(): string {
+    switch (this.passwordStrength) {
+      case 'Weak':
+        return 'text-destructive';
+      case 'Medium':
+        return 'text-yellow-600 dark:text-yellow-500';
+      case 'Strong':
+        return 'text-green-600 dark:text-green-500';
+      default:
+        return 'text-muted-foreground';
+    }
+  }
+
   <template>
-    <form {{on "submit" this.handleSubmit}}>
-      <div>
-        <label for="reg-username">Username</label>
+    <form class="space-y-4" {{on "submit" this.handleSubmit}}>
+      <div class="space-y-2">
+        <label
+          for="reg-username"
+          class="block text-sm font-medium text-foreground"
+        >
+          Username
+        </label>
         <input
           id="reg-username"
           data-test-username-input
           type="text"
           value={{this.username}}
           autocomplete="username"
+          placeholder="johndoe"
           aria-describedby={{if this.usernameError "reg-username-error"}}
           aria-invalid={{if this.usernameError "true"}}
+          class="w-full px-3 py-2 border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
+            {{if this.usernameError 'border-destructive' 'border-input'}}"
           {{on "input" this.updateUsername}}
           {{on "blur" this.handleUsernameBlur}}
         />
         {{#if this.usernameError}}
-          <div id="reg-username-error" data-test-username-error role="alert">
+          <div
+            id="reg-username-error"
+            data-test-username-error
+            role="alert"
+            class="text-sm text-destructive"
+          >
             {{this.usernameError}}
           </div>
         {{/if}}
       </div>
 
-      <div>
-        <label for="reg-email">Email</label>
+      <div class="space-y-2">
+        <label
+          for="reg-email"
+          class="block text-sm font-medium text-foreground"
+        >
+          Email
+        </label>
         <input
           id="reg-email"
           data-test-email-input
           type="email"
           value={{this.email}}
           autocomplete="email"
+          placeholder="you@example.com"
           aria-describedby={{if this.emailError "reg-email-error"}}
           aria-invalid={{if this.emailError "true"}}
+          class="w-full px-3 py-2 border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
+            {{if this.emailError 'border-destructive' 'border-input'}}"
           {{on "input" this.updateEmail}}
           {{on "blur" this.handleEmailBlur}}
         />
         {{#if this.emailError}}
-          <div id="reg-email-error" data-test-email-error role="alert">
+          <div
+            id="reg-email-error"
+            data-test-email-error
+            role="alert"
+            class="text-sm text-destructive"
+          >
             {{this.emailError}}
           </div>
         {{/if}}
       </div>
 
-      <div>
-        <label for="reg-password">Password</label>
+      <div class="space-y-2">
+        <label
+          for="reg-password"
+          class="block text-sm font-medium text-foreground"
+        >
+          Password
+        </label>
         <input
           id="reg-password"
           data-test-password-input
           type="password"
           value={{this.password}}
           autocomplete="new-password"
-          aria-describedby="reg-password-hint {{if
-            this.passwordError
-            'reg-password-error'
-          }}"
+          placeholder="••••••••"
+          aria-describedby="reg-password-hint {{if this.passwordError 'reg-password-error'}}"
           aria-invalid={{if this.passwordError "true"}}
+          class="w-full px-3 py-2 border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
+            {{if this.passwordError 'border-destructive' 'border-input'}}"
           {{on "input" this.updatePassword}}
           {{on "blur" this.handlePasswordBlur}}
         />
         {{#if this.passwordError}}
-          <div id="reg-password-error" data-test-password-error role="alert">
+          <div
+            id="reg-password-error"
+            data-test-password-error
+            role="alert"
+            class="text-sm text-destructive"
+          >
             {{this.passwordError}}
           </div>
         {{/if}}
@@ -241,26 +290,32 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
             id="reg-password-hint"
             data-test-password-strength
             aria-live="polite"
+            class="text-sm {{this.passwordStrengthColor}}"
           >
             Password strength:
-            {{this.passwordStrength}}
+            <span class="font-medium">{{this.passwordStrength}}</span>
           </div>
         {{/if}}
       </div>
 
-      <div>
-        <label for="reg-confirm-password">Confirm Password</label>
+      <div class="space-y-2">
+        <label
+          for="reg-confirm-password"
+          class="block text-sm font-medium text-foreground"
+        >
+          Confirm Password
+        </label>
         <input
           id="reg-confirm-password"
           data-test-confirm-password-input
           type="password"
           value={{this.confirmPassword}}
           autocomplete="new-password"
-          aria-describedby={{if
-            this.confirmPasswordError
-            "reg-confirm-password-error"
-          }}
+          placeholder="••••••••"
+          aria-describedby={{if this.confirmPasswordError "reg-confirm-password-error"}}
           aria-invalid={{if this.confirmPasswordError "true"}}
+          class="w-full px-3 py-2 border rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent
+            {{if this.confirmPasswordError 'border-destructive' 'border-input'}}"
           {{on "input" this.updateConfirmPassword}}
           {{on "blur" this.handleConfirmPasswordBlur}}
         />
@@ -269,27 +324,41 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
             id="reg-confirm-password-error"
             data-test-confirm-password-error
             role="alert"
+            class="text-sm text-destructive"
           >
             {{this.confirmPasswordError}}
           </div>
         {{/if}}
       </div>
 
-      <button
-        data-test-submit-button
-        type="submit"
-        disabled={{not this.isValid}}
-        aria-disabled={{not this.isValid}}
-      >
-        Submit
-      </button>
+      <div class="flex gap-3 pt-2">
+        <button
+          data-test-submit-button
+          type="submit"
+          disabled={{not this.isValid}}
+          aria-disabled={{not this.isValid}}
+          class="flex-1 px-4 py-2 bg-primary text-primary-foreground font-medium rounded-md hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+        >
+          Register
+        </button>
 
-      <button data-test-clear-button type="button" {{on "click" this.clear}}>
-        Clear
-      </button>
+        <button
+          data-test-clear-button
+          type="button"
+          class="px-4 py-2 border border-input bg-background text-foreground font-medium rounded-md hover:bg-muted focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 transition-colors"
+          {{on "click" this.clear}}
+        >
+          Clear
+        </button>
+      </div>
 
       {{#if this.submitted}}
-        <div data-test-success-message role="status" aria-live="polite">
+        <div
+          data-test-success-message
+          role="status"
+          aria-live="polite"
+          class="text-sm text-green-600 dark:text-green-500 bg-green-50 dark:bg-green-950 px-3 py-2 rounded-md"
+        >
           Registration successful!
         </div>
       {{/if}}
