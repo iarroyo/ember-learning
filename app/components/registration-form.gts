@@ -175,59 +175,111 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
 
   <template>
     <form {{on "submit" this.handleSubmit}}>
-      <input
-        data-test-username-input
-        type="text"
-        value={{this.username}}
-        {{on "input" this.updateUsername}}
-        {{on "blur" this.handleUsernameBlur}}
-      />
-      {{#if this.usernameError}}
-        <div data-test-username-error>{{this.usernameError}}</div>
-      {{/if}}
+      <div>
+        <label for="reg-username">Username</label>
+        <input
+          id="reg-username"
+          data-test-username-input
+          type="text"
+          value={{this.username}}
+          autocomplete="username"
+          aria-describedby={{if this.usernameError "reg-username-error"}}
+          aria-invalid={{if this.usernameError "true"}}
+          {{on "input" this.updateUsername}}
+          {{on "blur" this.handleUsernameBlur}}
+        />
+        {{#if this.usernameError}}
+          <div id="reg-username-error" data-test-username-error role="alert">
+            {{this.usernameError}}
+          </div>
+        {{/if}}
+      </div>
 
-      <input
-        data-test-email-input
-        type="email"
-        value={{this.email}}
-        {{on "input" this.updateEmail}}
-        {{on "blur" this.handleEmailBlur}}
-      />
-      {{#if this.emailError}}
-        <div data-test-email-error>{{this.emailError}}</div>
-      {{/if}}
+      <div>
+        <label for="reg-email">Email</label>
+        <input
+          id="reg-email"
+          data-test-email-input
+          type="email"
+          value={{this.email}}
+          autocomplete="email"
+          aria-describedby={{if this.emailError "reg-email-error"}}
+          aria-invalid={{if this.emailError "true"}}
+          {{on "input" this.updateEmail}}
+          {{on "blur" this.handleEmailBlur}}
+        />
+        {{#if this.emailError}}
+          <div id="reg-email-error" data-test-email-error role="alert">
+            {{this.emailError}}
+          </div>
+        {{/if}}
+      </div>
 
-      <input
-        data-test-password-input
-        type="password"
-        value={{this.password}}
-        {{on "input" this.updatePassword}}
-        {{on "blur" this.handlePasswordBlur}}
-      />
-      {{#if this.passwordError}}
-        <div data-test-password-error>{{this.passwordError}}</div>
-      {{/if}}
-      {{#if this.passwordStrength}}
-        <div data-test-password-strength>{{this.passwordStrength}}</div>
-      {{/if}}
+      <div>
+        <label for="reg-password">Password</label>
+        <input
+          id="reg-password"
+          data-test-password-input
+          type="password"
+          value={{this.password}}
+          autocomplete="new-password"
+          aria-describedby="reg-password-hint {{if
+            this.passwordError
+            'reg-password-error'
+          }}"
+          aria-invalid={{if this.passwordError "true"}}
+          {{on "input" this.updatePassword}}
+          {{on "blur" this.handlePasswordBlur}}
+        />
+        {{#if this.passwordError}}
+          <div id="reg-password-error" data-test-password-error role="alert">
+            {{this.passwordError}}
+          </div>
+        {{/if}}
+        {{#if this.passwordStrength}}
+          <div
+            id="reg-password-hint"
+            data-test-password-strength
+            aria-live="polite"
+          >
+            Password strength:
+            {{this.passwordStrength}}
+          </div>
+        {{/if}}
+      </div>
 
-      <input
-        data-test-confirm-password-input
-        type="password"
-        value={{this.confirmPassword}}
-        {{on "input" this.updateConfirmPassword}}
-        {{on "blur" this.handleConfirmPasswordBlur}}
-      />
-      {{#if this.confirmPasswordError}}
-        <div
-          data-test-confirm-password-error
-        >{{this.confirmPasswordError}}</div>
-      {{/if}}
+      <div>
+        <label for="reg-confirm-password">Confirm Password</label>
+        <input
+          id="reg-confirm-password"
+          data-test-confirm-password-input
+          type="password"
+          value={{this.confirmPassword}}
+          autocomplete="new-password"
+          aria-describedby={{if
+            this.confirmPasswordError
+            "reg-confirm-password-error"
+          }}
+          aria-invalid={{if this.confirmPasswordError "true"}}
+          {{on "input" this.updateConfirmPassword}}
+          {{on "blur" this.handleConfirmPasswordBlur}}
+        />
+        {{#if this.confirmPasswordError}}
+          <div
+            id="reg-confirm-password-error"
+            data-test-confirm-password-error
+            role="alert"
+          >
+            {{this.confirmPasswordError}}
+          </div>
+        {{/if}}
+      </div>
 
       <button
         data-test-submit-button
         type="submit"
         disabled={{not this.isValid}}
+        aria-disabled={{not this.isValid}}
       >
         Submit
       </button>
@@ -237,7 +289,9 @@ export class RegistrationForm extends Component<RegistrationFormSignature> {
       </button>
 
       {{#if this.submitted}}
-        <div data-test-success-message>Registration successful!</div>
+        <div data-test-success-message role="status" aria-live="polite">
+          Registration successful!
+        </div>
       {{/if}}
     </form>
   </template>

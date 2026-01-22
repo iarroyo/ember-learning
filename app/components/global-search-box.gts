@@ -52,12 +52,13 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
   }
 
   <template>
-    <div data-test-global-search-box ...attributes>
+    <div data-test-global-search-box role="search" ...attributes>
       <div class="flex gap-2">
         <input
           data-test-search-input
-          type="text"
+          type="search"
           placeholder={{this.placeholder}}
+          aria-label={{this.placeholder}}
           class="flex-1 px-3 py-2 border rounded"
           {{on "input" this.handleInput}}
         />
@@ -66,6 +67,7 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
             data-test-search-cancel
             type="button"
             class="px-3 py-2 bg-gray-200 rounded"
+            aria-label="Cancel search"
             {{on "click" this.cancel}}
           >
             Cancel
@@ -73,38 +75,41 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
         {{/if}}
       </div>
 
-      {{#if this.isLoading}}
-        <div data-test-search-loading class="mt-2 text-gray-500">
-          Searching...
-        </div>
-      {{/if}}
-
-      {{#if this.hasResults}}
-        <div class="mt-2">
-          <div data-test-search-results-count class="text-sm text-gray-500">
-            {{this.results.length}}
-            results
+      <div aria-live="polite" aria-atomic="true">
+        {{#if this.isLoading}}
+          <div data-test-search-loading class="mt-2 text-gray-500">
+            Searching...
           </div>
-          <ul class="mt-1 space-y-1">
-            {{#each this.results as |result|}}
-              <li data-test-search-result class="p-2 bg-gray-50 rounded">
-                <div class="font-medium">{{result.title}}</div>
-                {{#if result.description}}
-                  <div
-                    class="text-sm text-gray-500"
-                  >{{result.description}}</div>
-                {{/if}}
-              </li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
+        {{/if}}
+
+        {{#if this.hasResults}}
+          <div class="mt-2">
+            <div data-test-search-results-count class="text-sm text-gray-500">
+              {{this.results.length}}
+              results
+            </div>
+            <ul class="mt-1 space-y-1" role="list" aria-label="Search results">
+              {{#each this.results as |result|}}
+                <li data-test-search-result class="p-2 bg-gray-50 rounded">
+                  <div class="font-medium">{{result.title}}</div>
+                  {{#if result.description}}
+                    <div
+                      class="text-sm text-gray-500"
+                    >{{result.description}}</div>
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+      </div>
 
       {{#if this.searchHistory.length}}
         <div class="mt-4 pt-4 border-t">
           <div class="flex justify-between items-center">
             <span
               data-test-history-label
+              id="search-history-label"
               class="text-sm font-medium text-gray-700"
             >
               Search History ({{this.searchHistory.length}})
@@ -113,12 +118,17 @@ export class GlobalSearchBox extends Component<GlobalSearchBoxSignature> {
               data-test-clear-history
               type="button"
               class="text-xs text-gray-500 hover:text-gray-700"
+              aria-label="Clear search history"
               {{on "click" this.clearHistory}}
             >
               Clear
             </button>
           </div>
-          <ul class="mt-1 space-y-1">
+          <ul
+            class="mt-1 space-y-1"
+            role="list"
+            aria-labelledby="search-history-label"
+          >
             {{#each this.searchHistory as |entry|}}
               <li data-test-history-entry class="text-sm text-gray-600">
                 "{{entry.query}}" -

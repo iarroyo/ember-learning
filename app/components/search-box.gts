@@ -91,12 +91,13 @@ export class SearchBox extends Component<SearchBoxSignature> {
   }
 
   <template>
-    <div data-test-search-box ...attributes>
+    <div data-test-search-box role="search" ...attributes>
       <div class="flex gap-2">
         <input
           data-test-search-input
-          type="text"
+          type="search"
           placeholder={{this.placeholder}}
+          aria-label={{this.placeholder}}
           class="flex-1 px-3 py-2 border rounded"
           {{on "input" this.handleInput}}
         />
@@ -105,6 +106,7 @@ export class SearchBox extends Component<SearchBoxSignature> {
             data-test-search-cancel
             type="button"
             class="px-3 py-2 bg-gray-200 rounded"
+            aria-label="Cancel search"
             {{on "click" this.cancel}}
           >
             Cancel
@@ -112,32 +114,34 @@ export class SearchBox extends Component<SearchBoxSignature> {
         {{/if}}
       </div>
 
-      {{#if this.isLoading}}
-        <div data-test-search-loading class="mt-2 text-gray-500">
-          Searching...
-        </div>
-      {{/if}}
-
-      {{#if this.hasResults}}
-        <div class="mt-2">
-          <div data-test-search-results-count class="text-sm text-gray-500">
-            {{this.results.length}}
-            results
+      <div aria-live="polite" aria-atomic="true">
+        {{#if this.isLoading}}
+          <div data-test-search-loading class="mt-2 text-gray-500">
+            Searching...
           </div>
-          <ul class="mt-1 space-y-1">
-            {{#each this.results as |result|}}
-              <li data-test-search-result class="p-2 bg-gray-50 rounded">
-                <div class="font-medium">{{result.title}}</div>
-                {{#if result.description}}
-                  <div
-                    class="text-sm text-gray-500"
-                  >{{result.description}}</div>
-                {{/if}}
-              </li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
+        {{/if}}
+
+        {{#if this.hasResults}}
+          <div class="mt-2">
+            <div data-test-search-results-count class="text-sm text-gray-500">
+              {{this.results.length}}
+              results
+            </div>
+            <ul class="mt-1 space-y-1" role="list" aria-label="Search results">
+              {{#each this.results as |result|}}
+                <li data-test-search-result class="p-2 bg-gray-50 rounded">
+                  <div class="font-medium">{{result.title}}</div>
+                  {{#if result.description}}
+                    <div
+                      class="text-sm text-gray-500"
+                    >{{result.description}}</div>
+                  {{/if}}
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+      </div>
     </div>
   </template>
 }

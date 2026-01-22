@@ -142,7 +142,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
     await fillIn('[data-test-password-input]', 'Weak1234');
 
-    assert.dom('[data-test-password-strength]').hasText('Weak');
+    assert.dom('[data-test-password-strength]').hasText('Password strength: Weak');
   });
 
   test('shows medium password strength', async function (assert) {
@@ -150,7 +150,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
     await fillIn('[data-test-password-input]', 'Medium1Pass');
 
-    assert.dom('[data-test-password-strength]').hasText('Medium');
+    assert.dom('[data-test-password-strength]').hasText('Password strength: Medium');
   });
 
   test('shows strong password strength', async function (assert) {
@@ -158,7 +158,7 @@ module('Integration | Component | registration-form', function (hooks) {
 
     await fillIn('[data-test-password-input]', 'Str0ng!Pass#2024');
 
-    assert.dom('[data-test-password-strength]').hasText('Strong');
+    assert.dom('[data-test-password-strength]').hasText('Password strength: Strong');
   });
 
   // Form submission

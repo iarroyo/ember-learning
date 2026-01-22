@@ -41,11 +41,12 @@ export class Counter extends Component<CounterSignature> {
   }
 
   <template>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-2" role="group" aria-label="Counter">
       <Button
         @variant="outline"
         @size="icon-sm"
         data-test-decrement
+        aria-label="Decrease count"
         {{on "click" this.decrement}}
       >
         −
@@ -53,11 +54,14 @@ export class Counter extends Component<CounterSignature> {
       <span
         data-test-count
         class="text-xl font-semibold tabular-nums w-10 text-center"
+        aria-live="polite"
+        aria-atomic="true"
       >{{this.count}}</span>
       <Button
         @variant="outline"
         @size="icon-sm"
         data-test-increment
+        aria-label="Increase count"
         {{on "click" this.increment}}
       >
         +

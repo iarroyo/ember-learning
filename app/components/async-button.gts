@@ -103,10 +103,12 @@ export class AsyncButton extends Component<AsyncButtonSignature> {
       data-test-async-button-error={{this.isStateError}}
       type="button"
       disabled={{this.isDisabled}}
+      aria-disabled={{this.isDisabled}}
+      aria-busy={{this.isStateLoading}}
       {{on "click" this.handleClick}}
       ...attributes
     >
-      {{this.displayLabel}}
+      <span aria-live="polite">{{this.displayLabel}}</span>
     </button>
   </template>
 }

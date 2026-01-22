@@ -49,7 +49,7 @@ const CardHeader: TOC<CardHeaderSignature> = <template>
 </template>;
 
 interface CardTitleSignature {
-  Element: HTMLDivElement;
+  Element: HTMLHeadingElement;
   Args: {
     class?: string;
   };
@@ -59,13 +59,13 @@ interface CardTitleSignature {
 }
 
 const CardTitle: TOC<CardTitleSignature> = <template>
-  <div
+  <h3
     class={{cn "leading-none font-semibold" @class}}
     data-slot="card-title"
     ...attributes
   >
     {{yield}}
-  </div>
+  </h3>
 </template>;
 
 interface CardDescriptionSignature {

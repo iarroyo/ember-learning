@@ -221,11 +221,15 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
 
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            for="profile-first-name-{{@mode}}"
+            class="block text-sm font-medium text-gray-700 mb-1"
+          >
             First Name
           </label>
           {{#if (eq @mode "object")}}
             <input
+              id="profile-first-name-object"
               data-test-first-name
               type="text"
               value={{this.objectState.firstName}}
@@ -234,6 +238,7 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
             />
           {{else}}
             <input
+              id="profile-first-name-granular"
               data-test-first-name
               type="text"
               value={{this.firstName}}
@@ -244,11 +249,15 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            for="profile-last-name-{{@mode}}"
+            class="block text-sm font-medium text-gray-700 mb-1"
+          >
             Last Name
           </label>
           {{#if (eq @mode "object")}}
             <input
+              id="profile-last-name-object"
               data-test-last-name
               type="text"
               value={{this.objectState.lastName}}
@@ -257,6 +266,7 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
             />
           {{else}}
             <input
+              id="profile-last-name-granular"
               data-test-last-name
               type="text"
               value={{this.lastName}}
@@ -267,11 +277,15 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            for="profile-email-{{@mode}}"
+            class="block text-sm font-medium text-gray-700 mb-1"
+          >
             Email
           </label>
           {{#if (eq @mode "object")}}
             <input
+              id="profile-email-object"
               data-test-email
               type="email"
               value={{this.objectState.email}}
@@ -280,6 +294,7 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
             />
           {{else}}
             <input
+              id="profile-email-granular"
               data-test-email
               type="email"
               value={{this.email}}
@@ -290,25 +305,28 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">
+          <label
+            for="profile-bio-{{@mode}}"
+            class="block text-sm font-medium text-gray-700 mb-1"
+          >
             Bio
           </label>
           {{#if (eq @mode "object")}}
             <textarea
+              id="profile-bio-object"
               data-test-bio
-              value={{this.objectState.bio}}
               rows="3"
               class="w-full px-3 py-2 border rounded"
               {{on "input" this.updateObjectBio}}
-            ></textarea>
+            >{{this.objectState.bio}}</textarea>
           {{else}}
             <textarea
+              id="profile-bio-granular"
               data-test-bio
-              value={{this.bio}}
               rows="3"
               class="w-full px-3 py-2 border rounded"
               {{on "input" this.updateBio}}
-            ></textarea>
+            >{{this.bio}}</textarea>
           {{/if}}
         </div>
 

@@ -1,4 +1,5 @@
 import { hash } from '@ember/helper';
+import { guidFor } from '@ember/object/internals';
 import { on } from '@ember/modifier';
 import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
@@ -32,6 +33,9 @@ interface TabsSignature {
 class Tabs extends Component<TabsSignature> {
   @tracked currentValue?: string;
 
+  // Generate unique ID for this tabs instance
+  tabsId = guidFor(this);
+
   get value() {
     return this.args.value ?? this.currentValue ?? this.args.defaultValue ?? '';
   }
@@ -51,9 +55,14 @@ class Tabs extends Component<TabsSignature> {
         (hash
           List=TabsList
           Trigger=(component
-            TabsTrigger currentValue=this.value setValue=this.setValue
+            TabsTrigger
+            currentValue=this.value
+            setValue=this.setValue
+            tabsId=this.tabsId
           )
-          Content=(component TabsContent currentValue=this.value)
+          Content=(component
+            TabsContent currentValue=this.value tabsId=this.tabsId
+          )
           value=this.value
           setValue=this.setValue
         )
@@ -91,6 +100,7 @@ interface TabsTriggerSignature {
     value: string;
     currentValue?: string;
     setValue?: (value: string) => void;
+    tabsId?: string;
     class?: string;
     disabled?: boolean;
   };
@@ -105,6 +115,14 @@ class TabsTrigger extends Component<TabsTriggerSignature> {
     return this.args.value === this.args.currentValue;
   }
 
+  get triggerId() {
+    return `${this.args.tabsId}-tab-${this.args.value}`;
+  }
+
+  get panelId() {
+    return `${this.args.tabsId}-panel-${this.args.value}`;
+  }
+
   handleClick = () => {
     if (!this.args.disabled && this.args.setValue) {
       this.args.setValue(this.args.value);
@@ -113,7 +131,9 @@ class TabsTrigger extends Component<TabsTriggerSignature> {
 
   <template>
     <button
+      id={{this.triggerId}}
       aria-selected={{if this.isActive "true" "false"}}
+      aria-controls={{this.panelId}}
       class={{cn
         "data-[state=active]:bg-background dark:data-[state=active]:text-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:outline-ring dark:data-[state=active]:border-input dark:data-[state=active]:bg-input/30 text-foreground dark:text-muted-foreground inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap transition-[color,box-shadow] focus-visible:ring-[3px] focus-visible:outline-1 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:shadow-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
         @class
@@ -135,6 +155,7 @@ interface TabsContentSignature {
   Args: {
     value: string;
     currentValue?: string;
+    tabsId?: string;
     class?: string;
   };
   Blocks: {
@@ -148,9 +169,19 @@ class TabsContent extends Component<TabsContentSignature> {
     return this.args.value === this.args.currentValue;
   }
 
+  get panelId() {
+    return `${this.args.tabsId}-panel-${this.args.value}`;
+  }
+
+  get triggerId() {
+    return `${this.args.tabsId}-tab-${this.args.value}`;
+  }
+
   <template>
     {{#if this.isActive}}
       <div
+        id={{this.panelId}}
+        aria-labelledby={{this.triggerId}}
         class={{cn "flex-1 outline-none" @class}}
         data-slot="tabs-content"
         data-state={{if this.isActive "active" "inactive"}}

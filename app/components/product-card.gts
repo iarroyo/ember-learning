@@ -39,21 +39,28 @@ export class ProductCard extends Component<ProductCardSignature> {
   }
 
   <template>
-    <div>
+    <article aria-labelledby="product-{{@product.id}}-name">
       {{#if @product.image}}
         <img
           data-test-product-image
           src={{@product.image}}
-          alt={{@product.name}}
+          alt=""
         />
       {{/if}}
       <a data-test-product-link href={{this.productLink}}>
-        <div data-test-product-name>{{@product.name}}</div>
+        <div id="product-{{@product.id}}-name" data-test-product-name>
+          {{@product.name}}
+        </div>
         <div data-test-product-price>{{this.formattedPrice}}</div>
       </a>
-      <button data-test-add-to-cart type="button" {{on "click" this.addToCart}}>
+      <button
+        data-test-add-to-cart
+        type="button"
+        aria-label="Add {{@product.name}} to cart"
+        {{on "click" this.addToCart}}
+      >
         Add to Cart
       </button>
-    </div>
+    </article>
   </template>
 }

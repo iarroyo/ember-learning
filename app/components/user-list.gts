@@ -64,22 +64,25 @@ export class UserList extends Component<UserListSignature> {
   }
 
   <template>
-    {{#if this.resource.isLoading}}
-      <div data-test-skeleton>Loading...</div>
-    {{else if this.resource.isError}}
-      <div data-test-error>Error loading users</div>
-      <button
-        data-test-retry-button
-        type="button"
-        {{on "click" this.retry}}
-      >Retry</button>
-    {{else if this.resource.isSuccess}}
-      {{#each this.resource.data as |user|}}
-        <div data-test-user-card>
-          <UserCard @user={{user}} />
-          <div data-test-user-name>{{user.firstName}} {{user.lastName}}</div>
-        </div>
-      {{/each}}
-    {{/if}}
+    <div aria-live="polite" aria-busy={{this.resource.isLoading}}>
+      {{#if this.resource.isLoading}}
+        <div data-test-skeleton role="status">Loading users...</div>
+      {{else if this.resource.isError}}
+        <div data-test-error role="alert">Error loading users</div>
+        <button data-test-retry-button type="button" {{on "click" this.retry}}>
+          Retry loading users
+        </button>
+      {{else if this.resource.isSuccess}}
+        <ul role="list" aria-label="Users">
+          {{#each this.resource.data as |user|}}
+            <li data-test-user-card>
+              <UserCard @user={{user}} />
+              <div data-test-user-name>{{user.firstName}}
+                {{user.lastName}}</div>
+            </li>
+          {{/each}}
+        </ul>
+      {{/if}}
+    </div>
   </template>
 }

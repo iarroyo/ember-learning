@@ -52,7 +52,12 @@ const ModalHeader = <TOC<ModalHeaderSignature>><template>
   <div data-test-modal-header>
     <h2 data-test-modal-title id={{@titleId}}>{{@title}}</h2>
     {{#if @onClose}}
-      <button data-test-modal-close type="button" {{on "click" @onClose}}>
+      <button
+        data-test-modal-close
+        type="button"
+        aria-label="Close modal"
+        {{on "click" @onClose}}
+      >
         ×
       </button>
     {{/if}}

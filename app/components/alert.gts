@@ -63,6 +63,7 @@ export class Alert extends Component<AlertSignature> {
               data-test-alert-dismiss
               type="button"
               class="ml-4 text-current opacity-70 hover:opacity-100"
+              aria-label="Dismiss alert"
               {{on "click" this.dismiss}}
             >
               ×

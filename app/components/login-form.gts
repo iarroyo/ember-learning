@@ -64,31 +64,50 @@ export class LoginForm extends Component<LoginFormSignature> {
 
   <template>
     <form {{on "submit" this.handleSubmit}}>
-      <input
-        data-test-email-input
-        type="email"
-        value={{this.email}}
-        {{on "input" this.updateEmail}}
-      />
-      <input
-        data-test-password-input
-        type="password"
-        value={{this.password}}
-        {{on "input" this.updatePassword}}
-      />
+      <div>
+        <label for="login-email">Email</label>
+        <input
+          id="login-email"
+          data-test-email-input
+          type="email"
+          value={{this.email}}
+          autocomplete="email"
+          aria-describedby={{if this.error "login-error"}}
+          {{on "input" this.updateEmail}}
+        />
+      </div>
+      <div>
+        <label for="login-password">Password</label>
+        <input
+          id="login-password"
+          data-test-password-input
+          type="password"
+          value={{this.password}}
+          autocomplete="current-password"
+          aria-describedby={{if this.error "login-error"}}
+          {{on "input" this.updatePassword}}
+        />
+      </div>
 
-      {{#if this.isLoading}}
-        <div data-test-loading>Loading...</div>
-      {{/if}}
+      <div aria-live="polite" aria-atomic="true">
+        {{#if this.isLoading}}
+          <div data-test-loading>Loading...</div>
+        {{/if}}
 
-      {{#if this.error}}
-        <div data-test-error>{{this.error}}</div>
-      {{/if}}
+        {{#if this.error}}
+          <div
+            id="login-error"
+            data-test-error
+            role="alert"
+          >{{this.error}}</div>
+        {{/if}}
+      </div>
 
       <button
         data-test-submit-button
         type="submit"
         disabled={{not this.isValid}}
+        aria-disabled={{not this.isValid}}
       >
         Submit
       </button>
