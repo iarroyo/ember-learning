@@ -76,8 +76,10 @@ module('Integration | Component | user-card', function (hooks) {
 
     await render(<template><UserCard @user={{onlineUser}} /></template>);
 
-    assert.dom('[data-test-status]').hasClass('online');
-    assert.dom('[data-test-status]').hasText('Online');
+    assert.dom('[data-test-status]').hasClass('bg-green-500');
+    assert
+      .dom('[data-test-status]')
+      .hasAttribute('aria-label', 'Status: Online');
   });
 
   test('it shows offline status indicator', async function (assert) {
@@ -90,8 +92,10 @@ module('Integration | Component | user-card', function (hooks) {
 
     await render(<template><UserCard @user={{offlineUser}} /></template>);
 
-    assert.dom('[data-test-status]').hasClass('offline');
-    assert.dom('[data-test-status]').hasText('Offline');
+    assert.dom('[data-test-status]').hasClass('bg-gray-400');
+    assert
+      .dom('[data-test-status]')
+      .hasAttribute('aria-label', 'Status: Offline');
   });
 
   test('it shows premium badge when user is premium', async function (assert) {

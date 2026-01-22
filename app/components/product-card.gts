@@ -26,7 +26,6 @@ export class ProductCard extends Component<ProductCardSignature> {
     return `$${this.args.product.price.toFixed(2)}`;
   }
 
-
   @action
   addToCart(): void {
     this.shoppingCart.addItem({

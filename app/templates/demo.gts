@@ -945,7 +945,7 @@ class DemoPage extends Component {
                     states.
                   </p>
                   <div class="border rounded-lg p-4 bg-muted/30">
-                    <UserList />
+                    <UserList @onContact={{this.handleContactUser}} />
                   </div>
                 </CardContent>
               </Card>
