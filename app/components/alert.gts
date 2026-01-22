@@ -25,7 +25,7 @@ const variantClasses: Record<AlertVariant, string> = {
 };
 
 export class Alert extends Component<AlertSignature> {
-  @tracked isDismissed = false;
+  @tracked dismissedForVariant: AlertVariant | null = null;
 
   get variant(): AlertVariant {
     return this.args.variant ?? 'info';
@@ -36,7 +36,8 @@ export class Alert extends Component<AlertSignature> {
   }
 
   get isVisible(): boolean {
-    return !this.isDismissed;
+    // Only stay dismissed if dismissed for the current variant
+    return this.dismissedForVariant !== this.variant;
   }
 
   @action
@@ -44,7 +45,8 @@ export class Alert extends Component<AlertSignature> {
     if (this.args.onDismiss) {
       this.args.onDismiss();
     } else {
-      this.isDismissed = true;
+      // Track which variant was dismissed
+      this.dismissedForVariant = this.variant;
     }
   }
 
