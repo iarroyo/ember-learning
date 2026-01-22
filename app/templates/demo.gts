@@ -24,6 +24,7 @@ import {
 } from 'ember-learning/components/ui/card';
 import { Tabs } from 'ember-learning/components/ui/tabs';
 import { Separator } from 'ember-learning/components/ui/separator';
+import { eq } from 'ember-learning/helpers/eq';
 
 type AlertVariant = 'info' | 'success' | 'warning' | 'error';
 
@@ -435,11 +436,6 @@ class DemoPage extends Component {
       </div>
     </div>
   </template>
-}
-
-// Helpers
-function eq(a: unknown, b: unknown): boolean {
-  return a === b;
 }
 
 <template><DemoPage /></template>

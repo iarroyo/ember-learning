@@ -2,6 +2,8 @@ import Component from '@glimmer/component';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { on } from '@ember/modifier';
+import { eq } from 'ember-learning/helpers/eq';
+import { not } from 'ember-learning/helpers/not';
 
 export interface ProfileData {
   firstName: string;
@@ -338,13 +340,4 @@ export class ProfileEditor extends Component<ProfileEditorSignature> {
       </div>
     </form>
   </template>
-}
-
-// Helper for template
-function eq(a: unknown, b: unknown): boolean {
-  return a === b;
-}
-
-function not(value: unknown): boolean {
-  return !value;
 }

@@ -4,6 +4,10 @@ import type { HelperLike } from '@glint/template';
 
 declare module '@glint/environment-ember-loose/registry' {
   export default interface Registry {
+    eq: HelperLike<{
+      Args: { Positional: [unknown, unknown] };
+      Return: boolean;
+    }>;
     not: HelperLike<{
       Args: { Positional: [unknown] };
       Return: boolean;
